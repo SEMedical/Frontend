@@ -12,9 +12,6 @@
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="12">
-					<navigator url="/pages/mine/health" hover-class="navigator-hover">
-						<button type="default">跳转到健康档案页面</button>
-					</navigator>
 					<image src="../../static/icon/health.png" mode="aspectFill" style="width: 100%; height: 200px;"></image>
 					<view class="intro">健康档案</view>
 				</uni-col>

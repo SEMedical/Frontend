@@ -12,6 +12,13 @@
 			"navigationBarTitleText": "我的",
 			"navigationBarBackgroundColor": "#eee"
 		}
+	},
+	{
+		"path": "pages/mine/health",
+		"style": {
+			"navigationBarTitleText": "健康档案",
+			"navigationBarBackgroundColor": "#eee"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
