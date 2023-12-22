@@ -6,14 +6,12 @@
 			</uni-col>
 			<uni-col :span="12">
 				<view class="intro">张大强</view>
-				<button class="flex-item" type="primary" :disabled="!canAdd" @click="add">退出登录</button>
 			</uni-col>
 		</uni-row>
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="12">
-					<image src="../../static/icon/health.png" mode="aspectFill" style="width: 100%; height: 200px;"></image>
-					<view class="intro">健康档案</view>
+					<view class="intro">年龄：16</view>
 				</uni-col>
 			</uni-row>
 		</uni-card>

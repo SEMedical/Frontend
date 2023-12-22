@@ -19,6 +19,27 @@
 			"navigationBarTitleText": "健康档案",
 			"navigationBarBackgroundColor": "#eee"
 		}
+	},
+	{
+		"path": "pages/index/sport-history",
+		"style": {
+			"navigationBarTitleText": "运动历史",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/do-sport",
+		"style": {
+			"navigationBarTitleText": "我要运动",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/glycemia-calendar",
+		"style": {
+			"navigationBarTitleText": "血糖日历",
+			"navigationBarBackgroundColor": "#eee"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

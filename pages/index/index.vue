@@ -1,18 +1,33 @@
 <template>
 	<view class="container">
 		
-		<view class="intro">2023年11月28日</view>
-		<image src="../../static/home1.png" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+		<uni-title type="h1" title="2023年11月28日"></uni-title>
+		<uni-card :is-shadow="false">
+			<image src="../../static/home1.png" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+		</uni-card>
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
-					<button class="flex-item" type="primary" :disabled="!canAdd" @click="add">运动历史</button>
+					<navigator url="/pages/index/sport-history" hover-class="navigator-hover">
+						<button class="flex-item round-button blue-button">
+							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+						</button>
+						<view>运动历史</view>
+					</navigator>
 				</uni-col>
 				<uni-col :span="8">
-					<button class="flex-item" type="warn" :disabled="!canRemove" @click="remove">我要运动</button>
+					<navigator url="/pages/index/do-sport" hover-class="navigator-hover">
+						<button class="flex-item round-button green-button">
+							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+						</button>
+						<view>我要运动</view>
+					</navigator>
 				</uni-col>
 				<uni-col :span="8">
-					<button class="flex-item" type="primary" :disabled="!canAdd" @click="add">血糖日历</button>
+					<button class="flex-item round-button yellow-button">
+						<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+					</button>
+					<view>血糖日历</view>
 				</uni-col>
 			</uni-row>
 		</uni-card>
@@ -38,7 +53,7 @@
 
 <style>
 	.container {
-		padding: 20px;
+		padding: 0px;
 		font-size: 14px;
 		line-height: 24px;
 	}
@@ -46,4 +61,36 @@
         font-size: 30px; /* 替换 18px 为你想要的字体大小 */
 		font-weight: bold; /* 使用 bold 来将字体加粗 */
     }
+	.round-button {
+	  /* 设置宽度和高度相等，使按钮变为圆形 */
+	  width: 80px;
+	  height: 80px;
+	  border-radius: 50%; /* 将边框半径设置为50%，使其成为圆形 */
+	
+	  /* 设置按钮样式 */
+	  color: #fff; /* 文字颜色为白色，以适应渐变背景 */
+	  border: none; /* 去除按钮边框 */
+	  cursor: pointer;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+	.blue-button{
+		/* 添加渐变颜色 */
+		background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+	}
+	.green-button{
+		/* 添加渐变颜色 */
+		background: linear-gradient(to right, #6afa80, #5bcb8e); /* 使用线性渐变，可以根据需要调整颜色值 */
+	}
+	.yellow-button{
+		/* 添加渐变颜色 */
+		background: linear-gradient(to right, #fae018, #d5d524); /* 使用线性渐变，可以根据需要调整颜色值 */
+	}
+	/* 图片样式 */
+	.image-in-button {
+		/* 直接设置图片大小，适应按钮大小 */
+		width: 60px; /* 或者根据需要设置具体的宽度 */
+		height: 60px; /* 或者根据需要设置具体的高度 */
+	}
 </style>

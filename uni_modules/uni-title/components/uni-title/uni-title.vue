@@ -136,6 +136,12 @@
 		font-weight: 500;
 	}
 
+	.self-define-h0 {
+		font-size: 30px;
+		color: #333;
+		font-weight: bold;
+	}
+
 	.uni-h1 {
 		font-size: 20px;
 		color: #333;
