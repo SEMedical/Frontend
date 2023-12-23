@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted} from 'vue';
 import bloodSugar from '@/api/bloodSugar';
 
 const bloodsugar = ref([])
