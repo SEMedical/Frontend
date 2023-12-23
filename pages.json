@@ -21,23 +21,93 @@
 		}
 	},
 	{
-		"path": "pages/index/sport-history",
+		"path": "pages/index/sportHistory",
 		"style": {
 			"navigationBarTitleText": "运动历史",
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},
 	{
-		"path": "pages/index/do-sport",
+		"path": "pages/index/doSport",
 		"style": {
 			"navigationBarTitleText": "我要运动",
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},
 	{
-		"path": "pages/index/glycemia-calendar",
+		"path": "pages/index/bloodSugarCalendar",
 		"style": {
 			"navigationBarTitleText": "血糖日历",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/selectRecordType",
+		"style": {
+			"navigationBarTitleText": "选择记录类型",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/selectDay",
+		"style": {
+			"navigationBarTitleText": "选择要查看的日期",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/selectWeek",
+		"style": {
+			"navigationBarTitleText": "选择要查看的周",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/selectMonth",
+		"style": {
+			"navigationBarTitleText": "选择要查看的月",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/dailyHistoryGraphic",
+		"style": {
+			"navigationBarTitleText": "血糖日记录--图像",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/weeklyHistoryGraphic",
+		"style": {
+			"navigationBarTitleText": "血糖周记录--图像",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/monthlyHistoryGraphic",
+		"style": {
+			"navigationBarTitleText": "血糖月记录--图像",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/dailyHistoryText",
+		"style": {
+			"navigationBarTitleText": "血糖日记录--文本",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/weeklyHistoryText",
+		"style": {
+			"navigationBarTitleText": "血糖周记录--文本",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/monthlyHistoryText",
+		"style": {
+			"navigationBarTitleText": "血糖月记录--文本",
 			"navigationBarBackgroundColor": "#eee"
 		}
 	}],

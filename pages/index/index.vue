@@ -8,7 +8,7 @@
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
-					<navigator url="/pages/index/sport-history" hover-class="navigator-hover">
+					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
 							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
 						</button>
@@ -16,7 +16,7 @@
 					</navigator>
 				</uni-col>
 				<uni-col :span="8">
-					<navigator url="/pages/index/do-sport" hover-class="navigator-hover">
+					<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 						<button class="flex-item round-button green-button">
 							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
 						</button>
@@ -24,10 +24,12 @@
 					</navigator>
 				</uni-col>
 				<uni-col :span="8">
-					<button class="flex-item round-button yellow-button">
-						<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
-					</button>
-					<view>血糖日历</view>
+					<navigator url="/pages/index/bloodSugarCalendar" hover-class="navigator-hover">
+						<button class="flex-item round-button yellow-button">
+							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+						</button>
+						<view>血糖日历</view>
+					</navigator>
 				</uni-col>
 			</uni-row>
 		</uni-card>
