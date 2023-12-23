@@ -2,9 +2,7 @@
 	<view class="container">
 		
 		<uni-title type="h1" title="2023年11月28日"></uni-title>
-		<uni-card :is-shadow="false">
-			<image src="../../static/home1.png" mode="aspectFill" style="width: 100%; height: 200px;"></image>
-		</uni-card>
+		<image src="../../static/home1.png"></image>			
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
@@ -34,23 +32,31 @@
 			</uni-row>
 		</uni-card>
 		<uni-card :is-shadow="false">
-			当前血糖5.6mol/L，当前血糖处于正常水平，真是令人高兴呐！
+			当前血糖{{ bloodsugar }}mol/L，当前血糖处于正常水平，真是令人高兴呐！
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'
-			}
-		},
-		methods: {
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import bloodSugar from '@/api/bloodSugar';
 
-		}
-	}
+const bloodsugar = ref([])
+
+const getRealTimeBloodSugar = async () => {
+  try {
+    const response = await bloodSugar.realTimeBloodSugar();
+	bloodsugar.value = response;
+  } catch (error) {
+    console.error('获取血糖数据时出错：', error);
+  }
+};
+
+onMounted(() => {
+  getRealTimeBloodSugar();
+});
+
 </script>
 
 <style>
@@ -95,4 +101,10 @@
 		width: 60px; /* 或者根据需要设置具体的宽度 */
 		height: 60px; /* 或者根据需要设置具体的高度 */
 	}
+		
+	image {
+		display: block;
+		margin: 0 auto;
+	}
+	
 </style>
