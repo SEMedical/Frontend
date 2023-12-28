@@ -2,13 +2,13 @@
 	<view class="container">
 		
 		<uni-title type="h1" title="2023年11月28日"></uni-title>
-		<image src="../../static/home1.png"></image>			
+		<image src="../../static/home1.png"  class="homeimage"></image>
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
 					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
-							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+							<image src="../../static/icon/history.png" style="width:50px; height: 50px;"></image>
 						</button>
 						<view>运动历史</view>
 					</navigator>
@@ -16,15 +16,15 @@
 				<uni-col :span="8">
 					<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 						<button class="flex-item round-button green-button">
-							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+							<image src="../../static/icon/sport.png" style="width: 50px; height: 50px;"></image>
 						</button>
 						<view>我要运动</view>
 					</navigator>
 				</uni-col>
 				<uni-col :span="8">
-					<navigator url="/pages/index/bloodSugarCalendar" hover-class="navigator-hover">
+					<navigator url="/pages/index/bloodSugarCalendarGraphic" hover-class="navigator-hover">
 						<button class="flex-item round-button yellow-button">
-							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width: 100%; height: 200px;"></image>
+							<image src="../../static/icon/calendar.png" style="width: 50px; height: 50px;"></image>
 						</button>
 						<view>血糖日历</view>
 					</navigator>
@@ -56,7 +56,6 @@ const getRealTimeBloodSugar = async () => {
 onMounted(() => {
   getRealTimeBloodSugar();
 });
-
 </script>
 
 <style>
@@ -95,16 +94,14 @@ onMounted(() => {
 		/* 添加渐变颜色 */
 		background: linear-gradient(to right, #fae018, #d5d524); /* 使用线性渐变，可以根据需要调整颜色值 */
 	}
-	/* 图片样式 */
-	.image-in-button {
-		/* 直接设置图片大小，适应按钮大小 */
-		width: 60px; /* 或者根据需要设置具体的宽度 */
-		height: 60px; /* 或者根据需要设置具体的高度 */
-	}
 		
 	image {
 		display: block;
 		margin: 0 auto;
+	}
+	.homeimage{
+		width: 330px;
+		height:190px;
 	}
 	
 </style>

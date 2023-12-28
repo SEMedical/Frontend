@@ -5,11 +5,11 @@
 	        <br>
 	        <text class="text">请选择您要查看的记录类型</text>
 	        <br><br>
-	        <button class="selectButton"  @click="leadToDayRecords()" :class="{'clicked' : this.isDaily}">血糖日记录</button>
-	        <button class="selectButton" @click="leadToWeekRecords()" :class="{'clicked' : this.isWeekly}">血糖周记录</button>
-	        <button class="selectButton" @click="leadToMonthRecords()" :class="{'clicked' : this.isMonthly}">血糖月记录</button>
+	        <button class="selectButton"  @tap="leadToDayRecords()" :class="{'clicked' : this.isDaily}">血糖日记录</button>
+	        <button class="selectButton" @tap="leadToWeekRecords()" :class="{'clicked' : this.isWeekly}">血糖周记录</button>
+	        <button class="selectButton" @tap="leadToMonthRecords()" :class="{'clicked' : this.isMonthly}">血糖月记录</button>
 	    </view>
-		<button class="confirmButton" @click="leadToRecords()">确认</button>
+		<button class="confirmButton" @tap="leadToRecords()">确认</button>
 	</view>
 </template>
 
@@ -28,22 +28,21 @@
 				this.isDaily = true;
 				this.isWeekly = false;
 				this.isMonthly = false;
-				console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
+				//console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
 		    },
 		    leadToWeekRecords(){   //如果用户点击“血糖周记录”按钮，则将周记录置为true，其他置为false
 			    this.isDaily = false;
 				this.isWeekly = true;
 				this.isMonthly = false;
-				console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
+				//console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
 		    },
 		    leadToMonthRecords(){    //如果用户点击“血糖月记录”按钮，则将月记录置为true，其他置为false
 			    this.isDaily = false;
 				this.isWeekly = false;
 				this.isMonthly = true;
-				console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
+				//console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
 		    },
 			leadToRecords(){        //根据用户的选择，进行页面的跳转
-			    console.log("Clicked  " + this.isDaily + " " + this.isWeekly + "  " + this.isMonthly);
 				if(this.isDaily === true && this.isWeekly === false && this.isMonthly === false){
 					//如果用户选择的是“查看血糖日记录”，则跳转到/pages/index/selectDay页面
 					uni.navigateTo({

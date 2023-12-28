@@ -35,9 +35,16 @@
 		}
 	},
 	{
-		"path": "pages/index/bloodSugarCalendar",
+		"path": "pages/index/bloodSugarCalendarGraphic",
 		"style": {
-			"navigationBarTitleText": "血糖日历",
+			"navigationBarTitleText": "血糖日历--图像",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/bloodSugarCalendarText",
+		"style": {
+			"navigationBarTitleText": "血糖日历--文本",
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},

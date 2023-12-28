@@ -23,7 +23,7 @@
 			</picker-view>
 		</view>
 		
-		<button class="confirmButton" @click="leadToRecords()">确认</button>
+		<button class="confirmButton" @tap="leadToRecords()">确认</button>
 	</view>
 	
 </template>
