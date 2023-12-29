@@ -24,15 +24,17 @@
 					</uni-col>
 				</uni-row>
 				
-				<view class="charts-box">
-					<qiun-data-charts 
-						type="line"
-						:opts="opts"
-						:chartData="chartData"
-					/>
-				</view>
+				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="120">
+					<view class="charts-box">
+						<qiun-data-charts 
+							type="line"
+							:opts="opts"
+						    :chartData="chartData"
+						/>
+					</view>
+				</scroll-view>
 				
-				<text class="annonationText">注：左右滑动曲线图可查看具体的血糖数据</text>
+				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据</text>
 			</view>
 		</uni-card>
 		
@@ -68,14 +70,18 @@ export default{
 			opts: {
 			    color: ["#FAC858"], // 血糖折线的颜色
 				padding: [15, 10, 0, 15],
-				enableScroll: false,
+				enableScroll: true,
 				legend: {},
+				ontouch:true,
 				xAxis: {
-					disableGrid: true
+					disableGrid: true,
+					title:"时间",
+					itemCount:2,
+					scrollShow:true,
 				},
 				yAxis: {
 					gridType: "dash",
-					dashLength: 2
+					dashLength: 2,
 				},
 				extra: {
 				    line: {
@@ -90,6 +96,11 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
+			
+			scrollTop: 0,
+			old: {
+				scrollTop: 0
+			},
 	    }
 	},
 	mounted() {
@@ -143,15 +154,14 @@ export default{
 		
 		formatTime(dateTime) {
 		    // 将字符串时间转换为 Date 对象
-		    const date = new Date(dateTime);		   
-				      
-			// 获取时、分、秒
-			const hours = date.getHours().toString().padStart(2, '0');
-			const minutes = date.getMinutes().toString().padStart(2, '0');
-			const seconds = date.getSeconds().toString().padStart(2, '0');
-				      
-			// 拼接时分秒
-			return `${hours}:${minutes}:${seconds}`;
+		    const date = new Date(dateTime);
+		   
+		    // 获取时、分
+		    const hours = date.getHours().toString().padStart(2, '0');
+		    const minutes = date.getMinutes().toString().padStart(2, '0');
+		   
+		    // 拼接时分
+		    return `${hours}:${minutes}`;
 		},
 		
 		async getChartData() {
@@ -176,7 +186,11 @@ export default{
 			    console.error('获取本日血糖数据时出错：', error);
 			}
 		},
-				
+		
+		scroll: function(e) {
+			console.log(e)
+			this.old.scrollTop = e.detail.scrollTop
+		},		
 		
     },
 }
@@ -237,4 +251,16 @@ export default{
     width: 100%;
     height: 300px;
 }
+.scroll-view_H {
+	white-space: nowrap;
+	width: 100%;
+}
+.scroll-view-item_H {
+	display: inline-block;
+	width: 100%;
+	height: 300rpx;
+    line-height: 300rpx;
+	text-align: center;
+	font-size: 36rpx;
+	}
 </style>
