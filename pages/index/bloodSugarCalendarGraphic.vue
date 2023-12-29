@@ -95,8 +95,7 @@ export default{
 	mounted() {
 	    this.loadData();
 		this.loadPrompt();
-		this.loadDayBloodSugar();
-		this.getServerData();
+		this.getChartData();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -131,18 +130,6 @@ export default{
 				console.error('获取血糖小贴士时出错：',error);
 			}
 		},
-		//获取当日血糖数据
-		async loadDayBloodSugar(){
-		    try{
-				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
-				this.dayBloodSugar =response;
-				console.log(response);
-			}	
-			catch(error){
-				console.error('获取本日血糖数据时出错：',error);
-			}
-		},
-		
 		getStyle(){
 			const value = this.bloodsugar.value;
 			if (value > 80) {
@@ -167,13 +154,13 @@ export default{
 			return `${hours}:${minutes}:${seconds}`;
 		},
 		
-		async getServerData() {
+		async getChartData() {
 			try {
 				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
 				this.dayBloodSugar =response;
 				console.log(response);
 			    // 直接使用存储在 dayBloodSugar 中的数据
-			    const timeArray = this.dayBloodSugar.map(item => item.time);
+			    const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
 			    const valueArray = this.dayBloodSugar.map(item => item.value);
 			   
 			    this.chartData = {
