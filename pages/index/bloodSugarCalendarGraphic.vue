@@ -72,12 +72,13 @@ export default{
 				padding: [15, 10, 0, 15],
 				enableScroll: true,
 				legend: {},
-				ontouch:true,
+				ontaouch:true,
 				xAxis: {
 					disableGrid: true,
 					title:"时间",
-					itemCount:2,
+					itemCount:4,
 					scrollShow:true,
+					boundaryGap:"center",
 				},
 				yAxis: {
 					gridType: "dash",
@@ -85,7 +86,7 @@ export default{
 				},
 				extra: {
 				    line: {
-						type: "straight",
+						type: "curve",
 						width: 2,
 						activeType: "hollow"
 					}
