@@ -23,7 +23,6 @@
 						<button class="selectDayButton" @tap="switchToRecordType()">选择</button>
 					</uni-col>
 				</uni-row>
-				<!--血糖数据图-->
 				
 				
 				<text class="annonationText">注：左右滑动曲线图可查看具体的血糖数据</text>
@@ -52,16 +51,13 @@
 import { ref, onMounted} from 'vue';
 import bloodSugar from '@/api/bloodSugar';
 import Prompt from '@/api/bloodSugarPrompt.js';
+import todayBloodSugar from '@/api/currentDayBloodSugar.js';
 
 export default{
 	data(){
 		return{
-			chart:null,
-			//存储一天的血糖数据
-			bloodSugerValue:[
-				{time: "0:00",value :"50"},
-				
-			],
+			//存储当天的血糖数据
+			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
 	    }
@@ -69,6 +65,7 @@ export default{
 	mounted() {
 	    this.loadData();
 		this.loadPrompt();
+		this.loadDayBloodSugar();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -83,7 +80,7 @@ export default{
 				url:'/pages/index/selectRecordType',
 			});
 		},
-		
+		//获取实时血糖
         async loadData() {
 		    try {
 		        const response = await bloodSugar.realTimeBloodSugar();
@@ -93,7 +90,7 @@ export default{
 		        console.error('获取血糖数据时出错：', error);
 		    }
 	    },
-		
+		//获取血糖提示
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
@@ -101,6 +98,17 @@ export default{
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
+			}
+		},
+		//获取当日血糖数据
+		async loadDayBloodSugar(){
+		    try{
+				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
+				this.dayBloodSugar =response;
+				console.log(response);
+			}	
+			catch(error){
+				console.error('获取本日血糖数据时出错：',error);
 			}
 		},
 		
@@ -114,8 +122,7 @@ export default{
 			    return { color: 'green' };
 			}
 		},
-		
-	},
+    },
 }
 </script>
 
@@ -168,5 +175,10 @@ export default{
 	font-size: 15px;
 	font-weight: bold;
 	color: black;
+}
+/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
+.charts-box {
+    width: 100%;
+    height: 300px;
 }
 </style>

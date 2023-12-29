@@ -2,6 +2,9 @@
 // #ifndef VUE3
 import Vue from 'vue'
 import App from './App'
+import QiunDataCharts from '@/uni_modules/qiun-data-charts/index.';
+
+Vue.component('qiun-data-charts', QiunDataCharts);
 
 Vue.config.productionTip = false
 
