@@ -32,9 +32,8 @@
 						:ontouch="true"
 					/>
 				</view>
-					
 				
-				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息</text>
+				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息。蓝色线表示运动的开始时间，绿色线表示运动的结束时间。</text>
 				
 			</view>
 		</uni-card>
@@ -74,6 +73,7 @@ export default{
 				padding: [15, 10, 0, 15],
 				enableScroll: true,
 				legend: {},
+				enableMarkLine:true,
 				xAxis: {
 					disableGrid: true,
 					title:"时间",
@@ -86,41 +86,21 @@ export default{
 				},
 				yAxis: {
 					gridType: "dash",
-					dashLength: 2,
-					//下面是加的内容
-					/* disabled:false;
-					disableGrid:false,
-					splitNumber:5,
-					gridColor:"#CCCCCC",
-					padding:10,
-					showTitle:true,
-					data:[
-						{
-							position:"bottom",
-							title:"折线"
-						},
-						// {  //这里我不知道什么意思，为什么没有山峰图？
-						// 	position:"bottom",
-						// 	min:0,
-						// 	max:200,
-							
-						// }
-					] */
-					
+					dashLength: 2,	
 				},
 				extra: {
-					//不知道这个line要不要删
 				    line: {
 						type: "curve",
 						width: 2,
 						activeType: "hollow"
 					},
-					/* //这个mix是新加的
-					mix:{
-						column:{
-							width:20
-						}
-					} */
+					markLine: {
+					    labelAlign: 'center', // 标签居中显示
+					    labelFontSize: 12,
+					    labelFontColor: '#666666',
+					    labelBgColor: '#DFE8FF',
+					    labelBgOpacity: 0.8,
+					},
 			    },
 			},			
 			
@@ -135,7 +115,7 @@ export default{
 	    this.loadData();
 		this.loadPrompt();
 		this.getChartAndSportData();
-		this.loadDaySportTime();
+		//this.loadDaySportTime();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -193,7 +173,7 @@ export default{
 		    return `${hours}:${minutes}`;
 		},
 		
-		//获取当日运动时段
+		/* //获取当日运动时段
 		async loadDaySportTime(){
 		    try{
 				const response = await todaySportTime.getExerciseTime('realtime','12');
@@ -203,28 +183,72 @@ export default{
 			catch(error){
 				console.error('获取本日运动数据时出错：',error);
 			}
-		},
+		}, */
 		
 		async getChartAndSportData() {
 			try {
-				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
-				this.dayBloodSugar =response;
-				console.log(response);
+				//获取血糖数据
+				const response1 = await todayBloodSugar.getGlycemiaData('realtime','12');
+				this.dayBloodSugar =response1;
+				console.log(response1);
 			    // 直接使用存储在 dayBloodSugar 中的数据
 			    const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
 			    const valueArray = this.dayBloodSugar.map(item => item.value);
-			   
+			   //获取运动数据
+			   const response = await todaySportTime.getExerciseTime('realtime','12');
+			   this.daySportTime =response;
+			   console.log(response);
+			    // 添加运动时段标记线
+			    const markLines = this.daySportTime.map(item => {
+			        return {
+			            type: 'solid', // 实线
+			            dashLength: 4,
+			            data: [
+			                {
+			                    value: this.formatTime(item.start_time),
+			                    lineColor: '#00aaff',
+			                    showLabel: true,
+			                    labelAlign: 'right',
+			                    labelOffsetX: 5,
+			                    labelOffsetY: 0,
+			                    labelPadding: 6,
+			                    labelFontSize: 13,
+			                    labelFontColor: '#666666',
+			                    labelBgColor: '#DFE8FF',
+			                    labelBgOpacity: 0.8,
+			                },
+			                {
+			                    value: this.formatTime(item.end_time),
+			                    lineColor: '#55ff7f',
+			                    showLabel: true,
+			                    labelAlign: 'left',
+			                    labelOffsetX: 5,
+			                    labelOffsetY: 0,
+			                    labelPadding: 6,
+			                    labelFontSize: 13,
+			                    labelFontColor: '#666666',
+			                    labelBgColor: '#DFE8FF',
+			                    labelBgOpacity: 0.8,
+			                },
+			            ],
+			        };
+			    });
+
+
 			    this.chartData = {
 			        categories: timeArray,
 			        series: [
-			        {
-			            name: "血糖值",
-			            data: valueArray
-			        }
-			        ]
+			            {
+			                name: "血糖值",
+			                data: valueArray
+			            },
+			        ],
+					markLine: {
+					    data: markLines,
+					},
 			    };
 			} catch (error) {
-			    console.error('获取本日血糖数据时出错：', error);
+			    console.error('获取本日数据时出错：', error);
 			}
 		},		
 		
