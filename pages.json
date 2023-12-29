@@ -14,6 +14,20 @@
 		}
 	},
 	{
+		"path": "pages/login/login",
+		"style": {
+			"navigationBarTitleText": "登录",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/login/register",
+		"style": {
+			"navigationBarTitleText": "注册",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
 		"path": "pages/mine/health",
 		"style": {
 			"navigationBarTitleText": "健康档案",

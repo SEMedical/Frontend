@@ -1,14 +1,24 @@
 <template>
 	<view class="container">
-		
-		<uni-title type="h1" title="2023年11月28日"></uni-title>
-		<image src="../../static/home1.png"  class="homeimage"></image>
+		<uni-row class="demo-uni-row" :width="nvueWidth">
+			<uni-col :span="12">
+				<uni-title type="h1" title="2023年12月28日"></uni-title>
+			</uni-col>
+			<uni-col :span="12">
+				<navigator url="/pages/login/login" hover-class="navigator-hover">
+					<button class="flex-item round-button blue-button">
+						登录
+					</button>
+				</navigator>
+			</uni-col>
+		</uni-row>
+		<image src="../../static/home1.png" class="homeimage"></image>			
 		<uni-card :is-shadow="false">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
 					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
-							<image src="../../static/icon/history.png" style="width:50px; height: 50px;"></image>
+							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
 						<view>运动历史</view>
 					</navigator>
@@ -16,7 +26,7 @@
 				<uni-col :span="8">
 					<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 						<button class="flex-item round-button green-button">
-							<image src="../../static/icon/sport.png" style="width: 50px; height: 50px;"></image>
+							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
 						<view>我要运动</view>
 					</navigator>
@@ -24,7 +34,7 @@
 				<uni-col :span="8">
 					<navigator url="/pages/index/bloodSugarCalendarGraphic" hover-class="navigator-hover">
 						<button class="flex-item round-button yellow-button">
-							<image src="../../static/icon/calendar.png" style="width: 50px; height: 50px;"></image>
+							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
 						<view>血糖日历</view>
 					</navigator>
@@ -32,30 +42,64 @@
 			</uni-row>
 		</uni-card>
 		<uni-card :is-shadow="false">
-			当前血糖{{ bloodsugar }}mol/L，当前血糖处于正常水平，真是令人高兴呐！
+			<view :style="{ color: textColor}">当前血糖{{ blood_sugar }}mol/L，心率{{heart_rate}}，{{textContent}}！</view>
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
 </template>
 
 <script setup>
-import { ref, onMounted} from 'vue';
+import { ref, computed, onMounted } from 'vue';
+//import { useUserStore } from '@/store/user';
 import bloodSugar from '@/api/bloodSugar';
+import heartRate from '@/api/sport';
 
-const bloodsugar = ref([])
+const blood_sugar = ref([])
+const heart_rate = ref([])
 
 const getRealTimeBloodSugar = async () => {
   try {
     const response = await bloodSugar.realTimeBloodSugar();
-	bloodsugar.value = response;
+	blood_sugar.value = response;
   } catch (error) {
     console.error('获取血糖数据时出错：', error);
   }
 };
 
+const getRealTimeHeartRate = async () => {
+  try {
+    const response = await heartRate.realTimeHeartRate();
+	heart_rate.value = response;
+  } catch (error) {
+    console.error('获取心率数据时出错：', error);
+  }
+};
+
 onMounted(() => {
   getRealTimeBloodSugar();
+  getRealTimeHeartRate();
 });
+
+const textContent = computed(() => {
+	if (blood_sugar.value < 3.9){
+		return "血糖偏低，请注意！";
+	}
+	else if (blood_sugar.value > 10){
+		return "血糖偏高，请注意！";
+	}
+	else{
+		return "当前血糖处于正常水平，真是令人高兴啊！";
+	}
+});
+
+const textColor = computed(() => {
+  if (blood_sugar.value < 3.9 || blood_sugar.value > 10) {
+    return "red";
+  } else {
+    return "green";
+  }
+});
+
 </script>
 
 <style>
@@ -94,14 +138,20 @@ onMounted(() => {
 		/* 添加渐变颜色 */
 		background: linear-gradient(to right, #fae018, #d5d524); /* 使用线性渐变，可以根据需要调整颜色值 */
 	}
+	/* 图片样式 */
+	.image-in-button {
+		/* 直接设置图片大小，适应按钮大小 */
+		width: 60px; /* 或者根据需要设置具体的宽度 */
+		height: 60px; /* 或者根据需要设置具体的高度 */
+	}
 		
 	image {
 		display: block;
 		margin: 0 auto;
 	}
+	
 	.homeimage{
 		width: 330px;
 		height:190px;
 	}
-	
 </style>

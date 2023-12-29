@@ -2,7 +2,7 @@
 	<view class="container">
 		
 		<view class="intro">我的运动数据</view>
-		<view>近15天</view>
+		<view>近7天</view>
 		<uni-row class="demo-uni-row" :width="nvueWidth">
 			<uni-col :span="12">
 				<view>运动</view>
@@ -15,6 +15,7 @@
 		</uni-row>
 		<uni-card :is-shadow="false">
 			<view class="intro">跑步</view>
+			<view>近7天</view>
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="12">
 					<view>总时长</view>
@@ -26,7 +27,7 @@
 				</uni-col>
 			</uni-row>
 		</uni-card>
-		<uni-card :is-shadow="false">
+		<!--<uni-card :is-shadow="false">
 			<view class="intro">骑行</view>
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="12">
@@ -51,21 +52,44 @@
 					<view class="intro">1234千卡</view>
 				</uni-col>
 			</uni-row>
-		</uni-card>
+		</uni-card>-->
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'
-			}
-		},
-		methods: {
-	
-		}
-	}
+import { ref, computed, onMounted } from 'vue';
+import sportAPI from '@/api/sport';
+const sport_list = ref([]);
+const total_sport = ref([]);
+/*const getSportRecord = async () => {
+  try {
+    const response = await sportAPI.sportRecord();
+	for (const sport of response) {
+		let type = '';
+		let species = '';
+	    if (adoptpet.SEX === 'M') {
+	      gender = '弟弟';
+	    } else if (adoptpet.SEX === 'F') {
+	      gender = '妹妹';
+	    }
+	    if (adoptpet.SPECIES === 'cat') {
+	      species = '猫';
+	    } else if (adoptpet.SPECIES === 'dog') {
+	      species = '狗';
+	    }
+	    console.log(adoptpet.PET_NAME);
+	    pets.value.push({
+	      id: adoptpet.PET_ID,
+	      name: adoptpet.PET_NAME,
+	      species: species,
+	      gender: gender,
+	      age: adoptpet.AGE,
+	      image: adoptpet.AVATAR
+	    });
+  } catch (error) {
+    console.error('获取运动数据时出错：', error);
+  }
+};*/
 </script>
 
 <style>
