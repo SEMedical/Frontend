@@ -24,6 +24,13 @@
 					</uni-col>
 				</uni-row>
 				
+				<view class="charts-box">
+					<qiun-data-charts 
+						type="line"
+						:opts="opts"
+						:chartData="chartData"
+					/>
+				</view>
 				
 				<text class="annonationText">注：左右滑动曲线图可查看具体的血糖数据</text>
 			</view>
@@ -56,6 +63,29 @@ import todayBloodSugar from '@/api/currentDayBloodSugar.js';
 export default{
 	data(){
 		return{
+			chartData:{},
+		    //存储图片的配置选项
+			opts: {
+			    color: ["#FAC858"], // 血糖折线的颜色
+				padding: [15, 10, 0, 15],
+				enableScroll: false,
+				legend: {},
+				xAxis: {
+					disableGrid: true
+				},
+				yAxis: {
+					gridType: "dash",
+					dashLength: 2
+				},
+				extra: {
+				    line: {
+						type: "straight",
+						width: 2,
+						activeType: "hollow"
+					}
+			    }
+			},			
+			
 			//存储当天的血糖数据
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
@@ -66,6 +96,7 @@ export default{
 	    this.loadData();
 		this.loadPrompt();
 		this.loadDayBloodSugar();
+		this.getServerData();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -122,6 +153,44 @@ export default{
 			    return { color: 'green' };
 			}
 		},
+		
+		formatTime(dateTime) {
+		    // 将字符串时间转换为 Date 对象
+		    const date = new Date(dateTime);		   
+				      
+			// 获取时、分、秒
+			const hours = date.getHours().toString().padStart(2, '0');
+			const minutes = date.getMinutes().toString().padStart(2, '0');
+			const seconds = date.getSeconds().toString().padStart(2, '0');
+				      
+			// 拼接时分秒
+			return `${hours}:${minutes}:${seconds}`;
+		},
+		
+		async getServerData() {
+			try {
+				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
+				this.dayBloodSugar =response;
+				console.log(response);
+			    // 直接使用存储在 dayBloodSugar 中的数据
+			    const timeArray = this.dayBloodSugar.map(item => item.time);
+			    const valueArray = this.dayBloodSugar.map(item => item.value);
+			   
+			    this.chartData = {
+			        categories: timeArray,
+			        series: [
+			        {
+			            name: "血糖值",
+			            data: valueArray
+			        }
+			        ]
+			    };
+			} catch (error) {
+			    console.error('获取本日血糖数据时出错：', error);
+			}
+		},
+				
+		
     },
 }
 </script>
