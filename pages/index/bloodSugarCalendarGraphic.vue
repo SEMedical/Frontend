@@ -15,7 +15,7 @@
 		</view>
 		 
 		<!--血糖数据图像输出-->
-		<uni-card :is-shadow="false">
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<view class="empty-body">
 				<uni-row class="demo-uni-row" justify="space-between">
 					<uni-col :span="14">&nbsp;</uni-col>
@@ -23,23 +23,25 @@
 						<button class="selectDayButton" @tap="switchToRecordType()">选择</button>
 					</uni-col>
 				</uni-row>
-				
+				<br>
 				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="120">
 					<view class="charts-box">
 						<qiun-data-charts 
 							type="line"
 							:opts="opts"
 						    :chartData="chartData"
+							:ontouch="true"
 						/>
 					</view>
 				</scroll-view>
 				
-				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据</text>
+				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息</text>
+				
 			</view>
 		</uni-card>
 		
 		<!--实时血糖-->
-		<uni-card :is-shadow="false">
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
 					<uni-col :span="8" class="text1">
@@ -79,6 +81,9 @@ export default{
 					itemCount:4,
 					scrollShow:true,
 					boundaryGap:"center",
+					titleOffsetX:-13,
+					titleFontSize:12,
+					titleFontColor:"#0055ff",
 				},
 				yAxis: {
 					gridType: "dash",
@@ -90,7 +95,7 @@ export default{
 						width: 2,
 						activeType: "hollow"
 					}
-			    }
+			    },
 			},			
 			
 			//存储当天的血糖数据
