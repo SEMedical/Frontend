@@ -62,6 +62,7 @@ import { ref, onMounted} from 'vue';
 import bloodSugar from '@/api/bloodSugar';
 import Prompt from '@/api/bloodSugarPrompt.js';
 import todayBloodSugar from '@/api/currentDayBloodSugar.js';
+import todaySportTime from '@/api/getExerciseTime.js';
 
 export default{
 	data(){
@@ -73,7 +74,6 @@ export default{
 				padding: [15, 10, 0, 15],
 				enableScroll: true,
 				legend: {},
-				ontaouch:true,
 				xAxis: {
 					disableGrid: true,
 					title:"时间",
@@ -87,13 +87,40 @@ export default{
 				yAxis: {
 					gridType: "dash",
 					dashLength: 2,
+					//下面是加的内容
+					/* disabled:false;
+					disableGrid:false,
+					splitNumber:5,
+					gridColor:"#CCCCCC",
+					padding:10,
+					showTitle:true,
+					data:[
+						{
+							position:"bottom",
+							title:"折线"
+						},
+						// {  //这里我不知道什么意思，为什么没有山峰图？
+						// 	position:"bottom",
+						// 	min:0,
+						// 	max:200,
+							
+						// }
+					] */
+					
 				},
 				extra: {
+					//不知道这个line要不要删
 				    line: {
 						type: "curve",
 						width: 2,
 						activeType: "hollow"
-					}
+					},
+					/* //这个mix是新加的
+					mix:{
+						column:{
+							width:20
+						}
+					} */
 			    },
 			},			
 			
@@ -101,12 +128,14 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
+			daySportTime:[], //存储当天的运动时段
 	    }
 	},
 	mounted() {
 	    this.loadData();
 		this.loadPrompt();
-		this.getChartData();
+		this.getChartAndSportData();
+		this.loadDaySportTime();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -164,7 +193,19 @@ export default{
 		    return `${hours}:${minutes}`;
 		},
 		
-		async getChartData() {
+		//获取当日运动时段
+		async loadDaySportTime(){
+		    try{
+				const response = await todaySportTime.getExerciseTime('realtime','12');
+				this.daySportTime =response;
+				console.log(response);
+			}	
+			catch(error){
+				console.error('获取本日运动数据时出错：',error);
+			}
+		},
+		
+		async getChartAndSportData() {
 			try {
 				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
 				this.dayBloodSugar =response;
