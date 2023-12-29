@@ -89,8 +89,26 @@ export default{
 			);
 		},
 	},
+	
+	mounted() {
+		console.log(1);
+	    if (this.$options.mpType === 'page') {
+			console.log(2);
+	        // 从页面参数中获取传递的日期数据，此时获取的是传过来的 JSON 字符串数据
+	        const selectedDateStr = this.$mp.page.options.selectedDate;
+	        // 将 JSON 字符串转换为对象
+	        const selectedDate = JSON.parse(selectedDateStr);
+	        // 在数据中保存获取到的数据
+	        this.loadedDate.year = selectedDate[Object.keys(selectedDate)[0]];
+	        this.loadedDate.month = selectedDate[Object.keys(selectedDate)[1]];
+	        this.loadedDate.day = selectedDate[Object.keys(selectedDate)[2]];
+		    console.log(this.loadedDate.day);
+	    }
+	},
+
+	
 	methods: {
-		//获取从selectDay页面传递过来的日期数据
+		/* //获取从selectDay页面传递过来的日期数据
 		onLoad(options){
 			//从页面参数中获取传递的日期数据，此时获取的是传过来的JSON字符串数据
 			const selectedDateStr =options.selectedDate;
@@ -100,7 +118,7 @@ export default{
 			this.loadedDate.year = selectedDate[Object.keys(selectedDate)[0]];
 			this.loadedDate.month = selectedDate[Object.keys(selectedDate)[1]];
 			this.loadedDate.day = selectedDate[Object.keys(selectedDate)[2]];
-		},
+		}, */
 		//查看文本数据，跳转到文本数据页面
 		switchToText(){
 			uni.navigateTo({
