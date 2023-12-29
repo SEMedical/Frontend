@@ -24,16 +24,15 @@
 					</uni-col>
 				</uni-row>
 				<br>
-				<scroll-view class="scroll-view_H" scroll-x="true" @scroll="scroll" scroll-left="120">
-					<view class="charts-box">
-						<qiun-data-charts 
-							type="line"
-							:opts="opts"
-						    :chartData="chartData"
-							:ontouch="true"
-						/>
-					</view>
-				</scroll-view>
+				<view class="charts-box">
+					<qiun-data-charts 
+						type="line"
+						:opts="opts"
+					    :chartData="chartData"
+						:ontouch="true"
+					/>
+				</view>
+					
 				
 				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息</text>
 				
@@ -102,11 +101,6 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
-			
-			scrollTop: 0,
-			old: {
-				scrollTop: 0
-			},
 	    }
 	},
 	mounted() {
@@ -191,11 +185,6 @@ export default{
 			} catch (error) {
 			    console.error('获取本日血糖数据时出错：', error);
 			}
-		},
-		
-		scroll: function(e) {
-			console.log(e)
-			this.old.scrollTop = e.detail.scrollTop
 		},		
 		
     },
@@ -257,16 +246,4 @@ export default{
     width: 100%;
     height: 300px;
 }
-.scroll-view_H {
-	white-space: nowrap;
-	width: 100%;
-}
-.scroll-view-item_H {
-	display: inline-block;
-	width: 100%;
-	height: 300rpx;
-    line-height: 300rpx;
-	text-align: center;
-	font-size: 36rpx;
-	}
 </style>
