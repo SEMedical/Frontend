@@ -104,10 +104,10 @@ export default{
 	},
 	
 	methods: {
-		//查看文本数据，跳转到文本数据页面
+		//查看图像数据，跳转到图像数据页面
 		switchToGraphic(){
 			uni.navigateTo({
-				url : "/pages/index/dailyHistoryGraphic",
+				url : '/pages/index/dailyHistoryGraphic?selectedDate=' + JSON.stringify(this.loadedDate),
 			});
 		},
 		//跳转到当天的血糖数据页面
