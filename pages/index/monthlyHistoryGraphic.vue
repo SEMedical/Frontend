@@ -19,7 +19,7 @@
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
 					<uni-col :span="14">
-						<button  v-if = "showReturnNowButton" class="selectDayButton" @tap="goToNowButon()">回本月</button>
+						<button  v-if = "showReturnNowButton" class="selectDayButton" @tap="goToNowButton()">回本月</button>
 						<text v-if="!showReturnNowButton">&nbsp;</text>
 					</uni-col>
 					<uni-col :span="10">
@@ -78,7 +78,7 @@ export default{
 			highStatistic: ref([]),    //存储高血糖概率值
 			normalStatistic: ref([]),   //存储正常血糖概率值
 			lowStatistic: ref([]),    //存储低血糖概率值
-			//存储当天的血糖数据
+			//存储当月的血糖数据
 			monthBloodSugar:[],
 			loadedDate : {
 				year : 2023,
@@ -95,7 +95,7 @@ export default{
 				enableMarkLine:true,
 				xAxis: {
 					disableGrid: true,
-					title:"时间",
+					title:"日期",
 					itemCount:3,
 					scrollShow:true,
 					boundaryGap:"center",
@@ -216,7 +216,7 @@ export default{
 				};
 				
 			} catch(error){
-				console.log('获取本月数据时出错：' + error);
+				console.log('获取该月数据时出错：' + error);
 			}
 		},
 		//查看文本数据，跳转到文本数据页面
@@ -226,7 +226,7 @@ export default{
 			});
 		},
 		//回本月
-		goToNowButon(){
+		goToNowButton(){
 			// 更新日期为本月
 			const today = new Date();
 			this.loadedDate.year = today.getFullYear();
@@ -300,17 +300,6 @@ export default{
 }
 .annonationText{
 	font-size: 12px;;
-}
-.leftAndRightButton{
-	width: 20px;
-	height: 20px;
-	line-height: 20px;
-	border-radius: 50%;
-	background-color: orange;
-	color: white;
-	text-align: center;
-	font-size: 16px;
-	margin-top:150px;
 }
 /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
 .charts-box {
