@@ -33,7 +33,14 @@
 						</button>
 					</uni-col>
 					<uni-col :span="20">
-						
+						<!-- <view class="charts-box">
+							<qiun-data-charts 
+								type="line"
+								:opts="opts"
+							    :chartData="chartData"
+								:ontouch="true"
+							/>
+						</view> -->
 					</uni-col>
 					<uni-col :span="4">
 					    <button class="leftAndRightButton" @tap="rightButton()">
@@ -43,34 +50,75 @@
 				</uni-row>
 				
 				
-				<text class="annonationText">注：左右滑动曲线图可查看具体的血糖数据</text>
+				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息。蓝色线表示运动的开始时间，绿色线表示运动的结束时间。</text>
 			</view>
 		</uni-card>
 		
 		<!--统计数据-->
 		<uni-card :is-shadow="false">
-			<text class="statics">在{{loadedDate.year}}年{{loadedDate.month}}月{{loadedDate.day}}日，您的血糖值有：</text>
-			<text class="highText">{{highStatistic}}时间偏高</text>
-			<text class="normalText">{{normalStatistic}}时间正常</text>
-			<text class="lowText">{{lowStatistic}}时间偏低</text>
+			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月{{this.loadedDate.day}}日，您的血糖值有：</text>
+			<br>
+			<text class="highText">{{this.highStatistic}}时间偏高</text>
+			<br>
+			<text class="normalText">{{this.normalStatistic}}时间正常</text>
+			<br>
+			<text class="lowText">{{this.lowStatistic}}时间偏低</text>
 		</uni-card>
 		
 	</view>
 </template>
 
 <script>
+import { ref, onMounted} from 'vue';
+import DayBloodSugar from '@/api/currentDayBloodSugar.js';
+import DaySportTime from '@/api/getExerciseTime.js';
+	
 export default{
 	data(){
 		return{
-			highStatistic: {},
-			normalStatistic: {},
-			lowStatistic: {},
-			chart:null,
-			//存储一天的血糖数据
-			bloodSugerValue:[
-				{time: "0:00",value :"50"},
-				
-			],
+			highStatistic: ref([]),    //存储高血糖概率值
+			normalStatistic: ref([]),   //存储正常血糖概率值
+			lowStatistic: ref([]),    //存储低血糖概率值
+			chartData:{},
+			//存储图片的配置选项
+			opts: {
+			    color: ["#FAC858"], // 血糖折线的颜色
+				padding: [15, 10, 0, 15],
+				enableScroll: true,
+				legend: {},
+				enableMarkLine:true,
+				xAxis: {
+					disableGrid: true,
+					title:"时间",
+					itemCount:4,
+					scrollShow:true,
+					boundaryGap:"center",
+					titleOffsetX:-13,
+					titleFontSize:12,
+					titleFontColor:"#0055ff",
+				},
+				yAxis: {
+					gridType: "dash",
+					dashLength: 2,	
+				},
+				extra: {
+				    line: {
+						type: "curve",
+						width: 2,
+						activeType: "hollow"
+					},
+					markLine: {
+					    labelAlign: 'center', // 标签居中显示
+					    labelFontSize: 12,
+					    labelFontColor: '#666666',
+					    labelBgColor: '#DFE8FF',
+					    labelBgOpacity: 0.8,
+					},
+			    },
+			},	
+			daySportTime:[], //存储当天的运动时段
+			//存储当天的血糖数据
+			dayBloodSugar:[],
 			loadedDate : {
 				year : 2023,
 				month : 12,
@@ -78,6 +126,10 @@ export default{
 			},  //要加载的日期数据
 	    }
 	},
+	/* mounted(){
+		this.getChartAndSportData();
+		
+	} */
 	computed:{
 		//是否显示“回今天”按钮
 		returnToday(){
@@ -89,36 +141,13 @@ export default{
 			);
 		},
 	},
-	
-	mounted() {
-		console.log(1);
-	    if (this.$options.mpType === 'page') {
-			console.log(2);
-	        // 从页面参数中获取传递的日期数据，此时获取的是传过来的 JSON 字符串数据
-	        const selectedDateStr = this.$mp.page.options.selectedDate;
-	        // 将 JSON 字符串转换为对象
-	        const selectedDate = JSON.parse(selectedDateStr);
-	        // 在数据中保存获取到的数据
-	        this.loadedDate.year = selectedDate[Object.keys(selectedDate)[0]];
-	        this.loadedDate.month = selectedDate[Object.keys(selectedDate)[1]];
-	        this.loadedDate.day = selectedDate[Object.keys(selectedDate)[2]];
-		    console.log(this.loadedDate.day);
-	    }
-	},
 
+    onLoad: function (option) {
+		this.loadedDate = JSON.parse(option.selectedDate);
+		console.log(this.loadedDate);
+	},
 	
 	methods: {
-		/* //获取从selectDay页面传递过来的日期数据
-		onLoad(options){
-			//从页面参数中获取传递的日期数据，此时获取的是传过来的JSON字符串数据
-			const selectedDateStr =options.selectedDate;
-			//将JSON字符串转换为对象
-			const selectedDate = JSON.parse(selectedDateStr);
-			//在数据中保存获取到的数据
-			this.loadedDate.year = selectedDate[Object.keys(selectedDate)[0]];
-			this.loadedDate.month = selectedDate[Object.keys(selectedDate)[1]];
-			this.loadedDate.day = selectedDate[Object.keys(selectedDate)[2]];
-		}, */
 		//查看文本数据，跳转到文本数据页面
 		switchToText(){
 			uni.navigateTo({
@@ -136,6 +165,72 @@ export default{
 			// 重新加载当天的血糖数据
 			//this.loadData();
 		},
+		
+		/* async getChartAndSportData() {
+			try {
+				//获取血糖数据
+				const response1 = await DayBloodSugar.getGlycemiaData('realtime','12');
+				this.dayBloodSugar =response1;
+				console.log(response1);
+				// 直接使用存储在 dayBloodSugar 中的数据
+				const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
+				const valueArray = this.dayBloodSugar.map(item => item.value);
+				//获取运动数据
+				const response = await DaySportTime.getExerciseTime('realtime','12');
+				this.daySportTime =response;
+				console.log(response);
+				// 添加运动时段标记线
+				const markLines = this.daySportTime.map(item => {
+					return {
+					    type: 'solid', // 实线
+					    dashLength: 4,
+					    data: [
+					        {
+					            value: this.formatTime(item.start_time),
+					            lineColor: '#00aaff',
+					            showLabel: true,
+					            labelAlign: 'right',
+					            labelOffsetX: 5,
+					            labelOffsetY: 0,
+					            labelPadding: 6,
+					            labelFontSize: 13,
+					            labelFontColor: '#666666',
+					            labelBgColor: '#DFE8FF',
+					            labelBgOpacity: 0.8,
+					        },
+					        {
+					            value: this.formatTime(item.end_time),
+					            lineColor: '#55ff7f',
+					            showLabel: true,
+					            labelAlign: 'left',
+					            labelOffsetX: 5,
+					            labelOffsetY: 0,
+					            labelPadding: 6,
+					            labelFontSize: 13,
+					            labelFontColor: '#666666',
+					            labelBgColor: '#DFE8FF',
+					            labelBgOpacity: 0.8,
+					        },
+					    ],
+					};
+				});
+		
+				this.chartData = {
+				    categories: timeArray,
+					series: [
+					    {
+					        name: "血糖值",
+					        data: valueArray
+					    },
+					],
+					markLine: {
+						data: markLines,
+					},
+				};
+			} catch (error) {
+				console.error('获取本日数据时出错：', error);
+			}
+		},	 */
 	},
 }
 </script>
@@ -214,5 +309,10 @@ export default{
 	  font-size: 18px;
 	  margin: 5px;
 	  margin-top:150px;
+}
+/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
+.charts-box {
+    width: 100%;
+    height: 300px;
 }
 </style>

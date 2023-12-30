@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 
-// 获取日血糖数据（实时或历史）
+// 获取日血糖数据（实时）
 export default{
 	getGlycemiaData(type, user_id, date = '') {
 	    const params = {

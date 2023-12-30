@@ -111,11 +111,10 @@ export default{
 			daySportTime:[], //存储当天的运动时段
 	    }
 	},
-	mounted() {
+	onready() {
 	    this.loadData();
 		this.loadPrompt();
 		this.getChartAndSportData();
-		//this.loadDaySportTime();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面

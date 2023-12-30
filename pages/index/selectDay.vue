@@ -90,9 +90,8 @@ export default {
 			    const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // 注意修改为 Math.floor
 			
 			    if (daysDiff >= 0 && daysDiff <= 15) {
-			        const url = '/pages/index/dailyHistoryGraphic?selectedDate=' + JSON.stringify(this.selectedDate);
 			        uni.navigateTo({
-			            url: url,
+			            url: '/pages/index/dailyHistoryGraphic?selectedDate=' +JSON.stringify(this.selectedDate),
 			        });
 			    } else {
 			        // 显示提示，选择的日期不在过去15天内
