@@ -19,10 +19,11 @@
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
 					<uni-col :span="14">
-						<button  v-if = "returnToday" class="selectDayButton" @tap="goToTodayButton()">回今天</button>
+						<button  v-if = "showReturnTodayButton" class="selectDayButton" @tap="goToTodayButton()">回今天</button>
+						<text v-if="!showReturnTodayButton">&nbsp;</text>
 					</uni-col>
 					<uni-col :span="10">
-						<button class="selectDayButton">选择</button>
+						<button class="selectDayButton" @tap="goToSelectRecordType()">选择</button>
 					</uni-col>
 				</uni-row>
 				
@@ -132,16 +133,25 @@ export default{
 	
 	computed:{
 		//是否显示“回今天”按钮
-		returnToday(){
+		showReturnTodayButton(){
+			// 获取今天的日期
 			const today = new Date();
+			const todayDate = {
+			    year: today.getFullYear(),
+			    month: today.getMonth() + 1,
+			    day: today.getDate(),
+			};
+			
+			// 比较 loadedDate 和今天的日期
 			return (
-			    this.loadedDate.year === today.getFullYear() &&
-			    this.loadedDate.month === today.getMonth() + 1 &&
-			    this.loadedDate.day === today.getDate()
+			    this.loadedDate.year !== todayDate.year ||
+			    this.loadedDate.month !== todayDate.month ||
+			    this.loadedDate.day !== todayDate.day
 			);
 		},
 	},
 
+    //获取从selectDay页面传递过来的参数
     onLoad: function (option) {
 		this.loadedDate = JSON.parse(option.selectedDate);
 		console.log(this.loadedDate);
@@ -162,11 +172,16 @@ export default{
 			this.loadedDate.month = today.getMonth() + 1;
 			this.loadedDate.day = today.getDate();
 			
-			// 重新加载当天的血糖数据
-			//this.loadData();
+			this.getBloodSugarAndSportData();    //重新渲染图像
 		},
 		
-		async getDayBloodSugarData(){
+		//跳转到选择记录类型的页面
+		goToSelectRecordType(){
+			uni.navigateTo({
+				url:'/pages/index/selectRecordType',
+			});
+		},
+		/* async getDayBloodSugarData(){
 			try{
 				const response = await DayBloodSugar.getdailyGlycemia();
 				this.highStatistic.value = response.highSta;
@@ -180,7 +195,7 @@ export default{
 			} catch(error){
 				console.error('获取日血糖数据时出错：' + error);
 			}
-		},
+		}, */
 		
 		formatTime(dateTime) {
 		    // 将字符串时间转换为 Date 对象
@@ -194,6 +209,7 @@ export default{
 		    return `${hours}:${minutes}`;
 		},
 		
+		//获取血糖数据、统计值、运动数据，并将其赋值于图表数据中
 		async getBloodSugarAndSportData(){
 			try{
 				//获取血糖和统计值数据
