@@ -42,12 +42,14 @@ export default {
 	                year,
 	                months,
 	                month,
+					days:1,
 	                value: [9999, month - 1],
 	                visible: true,
 	                indicatorStyle: `height: 50px;`,
 					selectedDate: {
 						year: this.year,
 						month: this.month,
+						day:this.days,
 				    },
 	            }
 	        },
@@ -57,15 +59,17 @@ export default {
 	        const val = e.detail.value
 	        this.year = this.years[val[0]]
 	        this.month = this.months[val[1]]
+			this.days=1;
 			
 			this.selectedDate = {
 			    year: this.year,
 			    month: this.month,
+				day:this.days,
 			};
 	    },
 		leadToRecords(){
 			const currentDate = new Date(); // 当前日期
-			const selectedDate = new Date(this.year, this.month - 1); // 选择的日期
+			const selectedDate = new Date(this.year, this.month - 1, 1); // 选择的日期
 			
 			// 检查选择的日期是否在当前日期或之前
 			if (selectedDate <= currentDate) {
