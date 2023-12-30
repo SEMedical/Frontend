@@ -181,6 +181,16 @@ export default{
 				url:'/pages/index/selectRecordType',
 			});
 		},
+		//点击向左按钮，跳转到前一天
+		//现在不确定要不要保留
+		leftButton(){
+			
+		},
+		//点击向右按钮，跳转到后一天
+		//现在不确定要不要保留
+		rightButton(){
+			
+		},
 		/* async getDayBloodSugarData(){
 			try{
 				const response = await DayBloodSugar.getdailyGlycemia();
