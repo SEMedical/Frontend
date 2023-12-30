@@ -15,7 +15,7 @@
 		</view>
 		 
 		<!--血糖数据图像输出-->
-		<uni-card :is-shadow="false">
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
 					<uni-col :span="14">
@@ -54,7 +54,7 @@
 		</uni-card>
 		
 	    <!--统计数据-->
-		<uni-card :is-shadow="false">
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月第{{weekOfMonth}}周的这几天，您的血糖值有：</text>
 			<br>
 			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
