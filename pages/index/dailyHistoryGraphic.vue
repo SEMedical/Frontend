@@ -14,7 +14,7 @@
 			</uni-row>
 		</view>
 		 
-		<!--血糖数据文本输出-->
+		<!--血糖数据图像输出-->
 		<uni-card :is-shadow="false">
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
