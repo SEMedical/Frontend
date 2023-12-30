@@ -26,7 +26,7 @@
 						<button class="selectDayButton" @tap="goToSelectRecordType()">选择</button>
 					</uni-col>
 				</uni-row>
-				
+				<br>
 				<!-- <uni-row class="demo-uni-row">
 					<uni-col :span="1">
 						<button class="leftAndRightButton" @tap="leftButton()">
@@ -183,7 +183,7 @@ export default{
 		    return `${month}-${day}`;
 		},
 		//获取月血糖数据并进行图像的数据渲染
-		//获取血糖数据、统计值、运动数据，并将其赋值于图表数据中
+		//获取血糖数据、统计值，并将其赋值于图表数据中
 		async getBloodSugarData(){
 			try{
 				//获取血糖和统计值数据
@@ -219,10 +219,10 @@ export default{
 				console.log('获取本月数据时出错：' + error);
 			}
 		},
-		//“文本”按钮
+		//查看文本数据，跳转到文本数据页面
 		switchToText(){
 			uni.navigateTo({
-				url:'/pages/index/monthlyHistoryText?selectedData=' + JSON.stringify(this.loadedDate),
+				url : '/pages/index/monthlyHistoryText?selectedDate=' + JSON.stringify(this.loadedDate),
 			});
 		},
 		//回本月
