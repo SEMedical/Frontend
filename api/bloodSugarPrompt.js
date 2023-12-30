@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-//获取实时血糖数据
+//获取实时血糖提示
 export default{
   getBloodSugarPrompt() {
 		return request(`/api/glycemia/realTimePrompt`, 'GET')
