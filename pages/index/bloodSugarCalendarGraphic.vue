@@ -111,7 +111,7 @@ export default{
 			daySportTime:[], //存储当天的运动时段
 	    }
 	},
-	onready() {
+	mounted() {
 	    this.loadData();
 		this.loadPrompt();
 		this.getChartAndSportData();

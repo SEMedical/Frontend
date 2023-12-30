@@ -58,11 +58,11 @@
 		<uni-card :is-shadow="false">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月{{this.loadedDate.day}}日，您的血糖值有：</text>
 			<br>
-			<text class="highText">{{this.highStatistic}}时间偏高</text>
+			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
 			<br>
-			<text class="normalText">{{this.normalStatistic}}时间正常</text>
+			<text class="normalText">{{this.normalStatistic.value}}%时间正常</text>
 			<br>
-			<text class="lowText">{{this.lowStatistic}}时间偏低</text>
+			<text class="lowText">{{this.lowStatistic.value}}%时间偏低</text>
 		</uni-card>
 		
 	</view>
@@ -70,7 +70,7 @@
 
 <script>
 import { ref, onMounted} from 'vue';
-import DayBloodSugar from '@/api/currentDayBloodSugar.js';
+import DayBloodSugar from '@/api/dailyHistory.js';
 import DaySportTime from '@/api/getExerciseTime.js';
 	
 export default{
@@ -126,10 +126,12 @@ export default{
 			},  //要加载的日期数据
 	    }
 	},
-	/* mounted(){
-		this.getChartAndSportData();
-		
-	} */
+	
+	mounted(){
+		//this.getChartAndSportData();
+		this.getDayBloodSugarData();
+	},
+	
 	computed:{
 		//是否显示“回今天”按钮
 		returnToday(){
@@ -165,7 +167,32 @@ export default{
 			// 重新加载当天的血糖数据
 			//this.loadData();
 		},
+		//获取血糖数值和
+		async loadData() {
+		    try {
+		        const response = await bloodSugar.realTimeBloodSugar();
+		        this.bloodsugar.value = response;
+		        // 在这里可以进行其他的初始化操作
+		    } catch (error) {
+		        console.error('获取血糖数据时出错：', error);
+		    }
+		},
 		
+		async getDayBloodSugarData(){
+			try{
+				const response = await DayBloodSugar.getdailyGlycemia();
+				this.highStatistic.value = response.highSta;
+				this.normalStatistic.value = response.normalSta;
+				this.lowStatistic.value =response.lowSta;
+				console.log(this.highStatistic.value);
+				console.log(this.normalStatistic.value);
+				console.log(this.lowStatistic.value);
+				this.dayBloodSugar = response.entry;
+				console.log(this.dayBloodSugar);
+			} catch(error){
+				console.error('获取日血糖数据时出错：' + error);
+			}
+		}
 		/* async getChartAndSportData() {
 			try {
 				//获取血糖数据
@@ -264,12 +291,15 @@ export default{
 }
 .highText{
 	color:red;
+	font-size:15px;
 }
 .normalText{
 	color:green;
+	font-size:15px;
 }
 .lowText{
 	color:orange;
+	font-size:15px;
 }
 .selectDayButton{
 	background-color:ghostwhite;
