@@ -27,28 +27,27 @@
 				</uni-row>
 				
 				<uni-row class="demo-uni-row">
-					<uni-col :span="4">
+					<uni-col :span="1">
 						<button class="leftAndRightButton" @tap="leftButton()">
 							&lt
 						</button>
 					</uni-col>
 					<uni-col :span="20">
-						<!-- <view class="charts-box">
+						<view class="charts-box">
 							<qiun-data-charts 
 								type="line"
 								:opts="opts"
 							    :chartData="chartData"
 								:ontouch="true"
 							/>
-						</view> -->
+						</view>
 					</uni-col>
-					<uni-col :span="4">
+					<uni-col :span="1">
 					    <button class="leftAndRightButton" @tap="rightButton()">
 						    &gt					
 					   </button>
 					</uni-col>
 				</uni-row>
-				
 				
 				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息。蓝色线表示运动的开始时间，绿色线表示运动的结束时间。</text>
 			</view>
@@ -128,8 +127,7 @@ export default{
 	},
 	
 	mounted(){
-		//this.getChartAndSportData();
-		this.getDayBloodSugarData();
+		this.getBloodSugarAndSportData();
 	},
 	
 	computed:{
@@ -153,7 +151,7 @@ export default{
 		//查看文本数据，跳转到文本数据页面
 		switchToText(){
 			uni.navigateTo({
-				url : "/pages/index/dailyHistoryText",
+				url : '/pages/index/dailyHistoryText?selectedDate=' + JSON.stringify(this.loadedDate),
 			});
 		},
 		//跳转到当天的血糖数据页面
@@ -166,16 +164,6 @@ export default{
 			
 			// 重新加载当天的血糖数据
 			//this.loadData();
-		},
-		//获取血糖数值和
-		async loadData() {
-		    try {
-		        const response = await bloodSugar.realTimeBloodSugar();
-		        this.bloodsugar.value = response;
-		        // 在这里可以进行其他的初始化操作
-		    } catch (error) {
-		        console.error('获取血糖数据时出错：', error);
-		    }
 		},
 		
 		async getDayBloodSugarData(){
@@ -192,20 +180,42 @@ export default{
 			} catch(error){
 				console.error('获取日血糖数据时出错：' + error);
 			}
-		}
-		/* async getChartAndSportData() {
-			try {
-				//获取血糖数据
-				const response1 = await DayBloodSugar.getGlycemiaData('realtime','12');
-				this.dayBloodSugar =response1;
-				console.log(response1);
-				// 直接使用存储在 dayBloodSugar 中的数据
+		},
+		
+		formatTime(dateTime) {
+		    // 将字符串时间转换为 Date 对象
+		    const date = new Date(dateTime);
+		   
+		    // 获取时、分
+		    const hours = date.getHours().toString().padStart(2, '0');
+		    const minutes = date.getMinutes().toString().padStart(2, '0');
+		   
+		    // 拼接时分
+		    return `${hours}:${minutes}`;
+		},
+		
+		async getBloodSugarAndSportData(){
+			try{
+				//获取血糖和统计值数据
+				const response = await DayBloodSugar.getdailyGlycemia();
+				this.highStatistic.value = response.highSta;
+				this.normalStatistic.value = response.normalSta;
+				this.lowStatistic.value =response.lowSta;
+				console.log(this.highStatistic.value);
+				console.log(this.normalStatistic.value);
+				console.log(this.lowStatistic.value);
+				this.dayBloodSugar = response.entry;
+				console.log(this.dayBloodSugar);
+				
+				//将血糖数据存储在数组中
 				const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
 				const valueArray = this.dayBloodSugar.map(item => item.value);
+				
 				//获取运动数据
-				const response = await DaySportTime.getExerciseTime('realtime','12');
-				this.daySportTime =response;
-				console.log(response);
+				const sportResponse = await DaySportTime.getExerciseTime('realtime','12');
+				this.daySportTime =sportResponse;
+				console.log(sportResponse);
+				
 				// 添加运动时段标记线
 				const markLines = this.daySportTime.map(item => {
 					return {
@@ -241,7 +251,7 @@ export default{
 					    ],
 					};
 				});
-		
+						
 				this.chartData = {
 				    categories: timeArray,
 					series: [
@@ -254,10 +264,11 @@ export default{
 						data: markLines,
 					},
 				};
-			} catch (error) {
-				console.error('获取本日数据时出错：', error);
+				
+			} catch(error){
+				console.log('获取本日数据时出错：' + error);
 			}
-		},	 */
+		},
 	},
 }
 </script>
@@ -320,25 +331,15 @@ export default{
 	font-size: 12px;;
 }
 .leftAndRightButton{
-	/*border-color: orange;
-	color:orange;
-	background-color: white;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
 	border-radius: 50%;
-	height:40px;
-	weight:40px;
+	background-color: orange;
+	color: white;
+	text-align: center;
+	font-size: 16px;
 	margin-top:150px;
-	font-size:20px;
-	font-weight: bold;*/
-	 width: 40px;
-	  height: 40px;
-	  line-height: 40px;
-	  border-radius: 50%;
-	  background-color: orange;
-	  color: white;
-	  text-align: center;
-	  font-size: 18px;
-	  margin: 5px;
-	  margin-top:150px;
 }
 /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
 .charts-box {

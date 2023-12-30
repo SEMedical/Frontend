@@ -59,18 +59,17 @@
 </template>
 
 <script>
+import { ref, onMounted} from 'vue';
+import DayBloodSugar from '@/api/dailyHistory.js';
+
 export default{
 	data(){
 		return{
-			highStatistic: {},
-			normalStatistic: {},
-			lowStatistic: {},
-			chart:null,
-			//存储一天的血糖数据
-			bloodSugerValue:[
-				{time: "0:00",value :"50"},
-				
-			],
+			highStatistic: ref([]),    //存储高血糖概率值
+			normalStatistic: ref([]),   //存储正常血糖概率值
+			lowStatistic: ref([]),    //存储低血糖概率值
+            //存储当天的血糖数据
+			dayBloodSugar:[],
 			loadedDate : {
 				year : 2023,
 				month : 12,
@@ -78,18 +77,13 @@ export default{
 			},  //要加载的日期数据
 	    }
 	},
+
+	onLoad: function (option) {
+		this.loadedDate = JSON.parse(option.selectedDate);
+		console.log(this.loadedDate);
+	},
+	
 	methods: {
-		//获取从selectDay页面传递过来的日期数据
-		onLoad(options){
-			//从页面参数中获取传递的日期数据，此时获取的是传过来的JSON字符串数据
-			const selectedDateStr =options.selectedDate;
-			//将JSON字符串转换为对象
-			const selectedDate = JSON.parse(selectedDateStr);
-			//在数据中保存获取到的数据
-			this.loadedDate.year = selectedDate[Object.keys(selectedDate)[0]];
-			this.loadedDate.month = selectedDate[Object.keys(selectedDate)[1]];
-			this.loadedDate.day = selectedDate[Object.keys(selectedDate)[2]];
-		},
 		//查看文本数据，跳转到文本数据页面
 		switchToGraphic(){
 			uni.navigateTo({
@@ -99,6 +93,21 @@ export default{
 	    
 	},
 	computed:{
+		async getDayBloodSugarData(){
+			try{
+				const response = await DayBloodSugar.getdailyGlycemia();
+				this.highStatistic.value = response.highSta;
+				this.normalStatistic.value = response.normalSta;
+				this.lowStatistic.value =response.lowSta;
+				console.log(this.highStatistic.value);
+				console.log(this.normalStatistic.value);
+				console.log(this.lowStatistic.value);
+				this.dayBloodSugar = response.entry;
+				console.log(this.dayBloodSugar);
+			} catch(error){
+				console.error('获取日血糖数据时出错：' + error);
+			}
+		},
 		//是否显示“回今天”按钮
 		returnTodayButton(){
 			const today = new Date();
