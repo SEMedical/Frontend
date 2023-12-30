@@ -2,22 +2,21 @@
 	<view class="container">
 		<view class="warp">
 		    <br>
-		    <text class="text">请选择您要查看的周</text>
+		    <text class="text">请选择您要查看的周的起始日期</text>
 		    <br><br>
 		    <!--日历-->
-			<view class="uni-padding-wrap">
-				<view class="uni-title">请注意：您仅可查看一个月内的血糖数据</view>
-			</view>
-			<view class="uni-padding-wrap uni-common-mt">
-				<!--纵向滚动-->
-				<view>
-					<scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" >
-						<view id="demo1" class="scroll-view-item uni-bg-red">A</view>
-						<view id="demo2" class="scroll-view-item uni-bg-green">B</view>
-					    <view id="demo3" class="scroll-view-item uni-bg-blue">C</view>
-					</scroll-view>
-				</view>
-			</view>
+			<view class="uni-title">请注意：您仅可查看一个月内的周血糖数据</view>
+			<picker-view v-if="visible" :indicator-style="indicatorStyle" :value="value" @change="bindChange" class="picker-view">
+				<picker-view-column>
+					<view class="item" v-for="(item,index) in years" :key="index">{{item}}年</view>
+				</picker-view-column>
+				<picker-view-column>
+					<view class="item" v-for="(item,index) in months" :key="index">{{item}}月</view>
+				</picker-view-column>
+				<picker-view-column>
+					<view class="item" v-for="(item,index) in days" :key="index">{{item}}日</view>
+				</picker-view-column>
+			</picker-view>
 		</view>
 		
 		<!--确认按钮-->
@@ -27,21 +26,89 @@
 
 <script>
 export default {
-		data() {
-			return {
-				scrollTop: 0,
-				old: {
-					scrollTop: 0
-				}
-			}
-		},
+		data: function () {
+	            const date = new Date()
+	            const years = []
+	            const year = date.getFullYear()
+	            const months = []
+	            const month = date.getMonth() + 1
+	            const days = []
+	            const day = date.getDate()
+	            for (let i = 1990; i <= date.getFullYear(); i++) {
+	                years.push(i)
+	            }
+	            for (let i = 1; i <= 12; i++) {
+	                months.push(i)
+	            }
+	            for (let i = 1; i <= 31; i++) {
+	                days.push(i)
+	            }
+	            return {
+	                title: 'picker-view',
+	                years,
+	                year,
+	                months,
+	                month,
+	                days,
+	                day,
+	                value: [9999, month - 1, day - 1],
+	                visible: true,
+	                indicatorStyle: `height: 50px;`,
+					selectedDate: {
+						year: this.year,
+						month: this.month,
+						day: this.day,
+				    },
+	            }
+	        },
+			
+		
+		
 		methods: {
-			leadToRecords(){
-				uni.navigateTo({
-					url: '/pages/index/weeklyHistoryGraphic',
-				});
+			bindChange: function (e) {
+			    const val = e.detail.value
+			    this.year = this.years[val[0]]
+			    this.month = this.months[val[1]]
+			    this.day = this.days[val[2]]
+				
+				this.selectedDate = {
+				    year: this.year,
+				    month: this.month,
+				    day: this.day,
+				};
 			},
-		}
+			
+			leadToRecords(){
+				const currentDate = new Date(); // 当前日期
+				const selectedDate = new Date(this.year, this.month - 1, this.day); // 选择的日期
+				
+				// 检查选择的日期是否在当前日期或之前
+				if (selectedDate <= currentDate) {
+				    // 计算日期差异，以天为单位
+				    const timeDiff = currentDate.getTime() - selectedDate.getTime();
+				    const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // 注意修改为 Math.floor
+				
+				    if (daysDiff >= 0 && daysDiff <= 30) {
+						console.log(this.selectedDate);
+				        uni.navigateTo({
+				            url: '/pages/index/weeklyHistoryGraphic?selectedDate=' +JSON.stringify(this.selectedDate),
+				        });
+				    } else {
+				        // 显示提示，选择的日期不在过去一个月天内
+				        uni.showToast({
+				        title: '请选择一个月内的日期',
+				        icon: 'none',
+				        });
+				    }
+				} else {
+				    // 显示提示，选择的日期在当前日期之后
+				    uni.showToast({
+				        title: '这一周没有可查看的血糖数据！',
+				        icon: 'none',
+				    });
+				}
+			},
+		},
 	}	
 </script>
 
@@ -52,7 +119,7 @@ export default {
 	line-height: 24px;
 }
 .text{
-	font-size:25px;
+	font-size:20px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -60,15 +127,6 @@ export default {
 	margin-top:10px;
 	font-weight: bold;
 	
-}
-.scroll-Y {
-	height: 300rpx;
-}
-.scroll-view-item {
-	height: 300rpx;
-	line-height: 300rpx;
-	text-align: center;
-	font-size: 36rpx;
 }
 .confirmButton{
 	background-color:green;
@@ -79,5 +137,14 @@ export default {
 	height:50px;
 	border-radius:999px;
 	margin-top:100px;
+}
+.picker-view {
+	width: 750rpx;
+	height: 600rpx;
+	margin-top: 20rpx;
+}
+.item {
+	line-height: 100rpx;
+	text-align: center;
 }
 </style>

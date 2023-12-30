@@ -6,7 +6,7 @@
 		    <br><br>
 		    <!--日历-->
 			<view class="uni-padding-wrap">
-				<view class="uni-title">请注意：您仅可查看一年之内的血糖数据</view>
+				<view class="uni-title">请注意：您仅可查看一年之内的月血糖数据</view>
 			</view>
 			<picker-view v-if="visible" :indicator-style="indicatorStyle" :value="value" @change="bindChange" class="picker-view">
 				<picker-view-column>
