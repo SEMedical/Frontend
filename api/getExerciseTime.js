@@ -8,7 +8,7 @@ export default{
 	        user_id,
 	    };
 	
-	    return request('/api/glycemia/isexercise', 'GET', params)
+	    return request('/api/glycemia/isExercise', 'GET', params)
 	        .then(response => {
 	        console.log('后端响应:', response);
 	        return response.data.intervals; // 返回血糖数据的entry数组
