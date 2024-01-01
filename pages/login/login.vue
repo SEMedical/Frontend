@@ -24,7 +24,10 @@
 <script setup>
 	import { ref } from 'vue';
 	import loginAPI from  '@/api/login';
+import { useUserStore } from '@/store/user';
 	// 定义表单数据
+	
+const userStore = useUserStore();
 	const valiFormData = ref({
 	  id: '',       // 账号
 	  password: ''  // 密码
@@ -50,13 +53,13 @@
 	      console.log('表单验证成功');
 	      
 	      // 调用验证 API
-	      const response = await loginAPI({
-	        id: valiFormData.value.id, // 确保username字段存在，或者使用id字段
+		  console.log("xx",valiFormData);
+	      await userStore.getUserInfo({
+	        id: valiFormData.value.id, // 使用id字段
 	        password: valiFormData.value.password
 	      });
-	
 	      // 处理响应
-	      if (valiFormData.value.id===response.result.id&&valiFormData.value.password===response.result.password) { // is_success字段表示成功
+	      if (userStore.userInfo.success) { // success字段表示成功
 	        uni.showToast({ title: '登录成功' });
 			
 			setTimeout(() => {
