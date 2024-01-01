@@ -5,11 +5,16 @@
 				<uni-title type="h1" title="2023年12月28日"></uni-title>
 			</uni-col>
 			<uni-col :span="12">
-				<navigator url="/pages/login/login" hover-class="navigator-hover">
-					<button class="flex-item round-button blue-button">
-						登录
-					</button>
-				</navigator>
+				<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
+				      <button @click="debug" class="flex-item round-button blue-button">
+				        登录
+				      </button>
+				    </navigator>
+				
+				    <!-- 当用户登录后显示用户 ID -->
+				    <div v-else>
+				      {{ userInfo }}
+				    </div>
 			</uni-col>
 		</uni-row>
 		<image src="../../static/home1.png" class="homeimage"></image>			
@@ -53,10 +58,21 @@ import { ref, computed, onMounted } from 'vue';
 //import { useUserStore } from '@/store/user';
 import bloodSugar from '@/api/bloodSugar';
 import heartRate from '@/api/sport';
+import { useUserStore } from '@/store/user';
+const userStore = useUserStore();
+const isUserLoggedIn = computed(() => {
+  // 检查 userInfo 对象是否有键，即是否不为空
+  return Object.keys(userStore.userInfo).length > 0;
+});
 
+const userInfo = computed(() => userStore.userInfo);
 const blood_sugar = ref([])
 const heart_rate = ref([])
-
+function debug() {
+  console.log('当前 userStore 状态:', userStore);
+  console.log('当前 userInfo:', userStore.userInfo);
+  console.log('是否登录:', isUserLoggedIn.value);
+}
 const getRealTimeBloodSugar = async () => {
   try {
     const response = await bloodSugar.realTimeBloodSugar();

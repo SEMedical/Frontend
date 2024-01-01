@@ -44,5 +44,3 @@ export default (path, method, data = {}, loading = true) => {
 	    });
 	  });
 };
-
-

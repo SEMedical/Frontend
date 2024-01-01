@@ -49,6 +49,41 @@
 		}
 	},
 	{
+		"path": "pages/index/realTimeSport",
+		"style": {
+			"navigationBarTitleText": "实时运动",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/questionnaire0",
+		"style": {
+			"navigationBarTitleText": "运动问卷0",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/questionnaire1",
+		"style": {
+			"navigationBarTitleText": "运动问卷1",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/questionnaire2",
+		"style": {
+			"navigationBarTitleText": "运动问卷2",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
+		"path": "pages/index/recommendedSportPlan",
+		"style": {
+			"navigationBarTitleText": "推荐的运动方案",
+			"navigationBarBackgroundColor": "#eee"
+		}
+	},
+	{
 		"path": "pages/index/bloodSugarCalendarGraphic",
 		"style": {
 			"navigationBarTitleText": "血糖日历--图像",

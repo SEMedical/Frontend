@@ -1,37 +1,32 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { loginAPI } from "@/api/user";
+// 管理用户数据
 
-Vue.use(Vuex);
-export const useUserStore= new Vuex.Store({
-  state: {
-    userInfo: {}
-  },
-  getters: {
-    userInfo: state => state.userInfo
-  },
-  mutations: {
-    setUserInfo(state, userInfo) {
-      state.userInfo = userInfo;
-    },
-    clearUserInfo(state) {
-      state.userInfo = {};
+import { defineStore } from "pinia"
+import { ref } from "vue"
+import { loginAPI } from "@/api/login"
+
+
+export const useUserStore = defineStore('user',() => {
+    const userInfo = ref({})
+    // 获取用户信息并存储
+    const getUserInfo = async({id,password}) => {
+        const res = await loginAPI({id,password})
+		const token = res.token;
+		uni.setStorageSync('jwt_token', token);
+		console.log("222222",res);
+        userInfo.value = res
+		console.log(userInfo.value);
     }
-  },
-  actions: {
-    async getUserInfo({ commit }, { username, password }) {
-      const token = '';
-      try {
-        const res = await loginAPI({ token, username, password });
-        commit('setUserInfo', res.data);
-        uni.setStorageSync('jwt_token', token);
-        //localStorage.setItem('jwt_token', token); // 假设这里应该存储从后端返回的 token
-      } catch (error) {
-        console.error('登录失败:', error);
-      }
-    },
-    clearUserInfo({ commit }) {
-      commit('clearUserInfo');
+
+    // 退出时清除用户信息
+    const clearUserInfo = ()=> {
+        userInfo.value={}
     }
-  }
-});
+
+    return {
+        userInfo,
+        getUserInfo,
+        clearUserInfo
+    }
+},{
+    persist:true,
+})
