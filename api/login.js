@@ -1,5 +1,5 @@
-import request from '@/utils/request'
-
+import request from '@/utils/request';
+import {useUserStore} from '@/store/user.js'
 // export default{
 //   loginAPI() {
 // 		return request(`/api/login/login`, 'POST')
@@ -12,45 +12,20 @@ import request from '@/utils/request'
 // 		});
 // 	}
 // }
-export const loginAPI = ({id,password}) => {
-    return request(
-        '/login',
-        'POST',
-        {
-            id,
-            password
-        },
-		
-		).then(response => {
-      // 如果请求成功，返回响应数据
-      console.log('验证成功x:', response,'id',id,'密码',password);
-	  return response;
-    })
-    .catch(error => {
-      // 如果请求失败，抛出错误
-      console.error('验证失败x:', error);
-      throw error;
-    });
-    
-}
-export default loginAPI;
-export const registerAPI = ({id,password}) => {
+export const loginAPI = async ({ id, password }) => {
+  try {
+    const response = await request('/login', 'POST', { contact: id, password:password });
 
-    return request({
-        url:'/register',
-        method:'POST',
-        data:{
-			id,
-            password,
-        }
-    }).then(response => {
-      // 如果请求成功，返回响应数据
-      console.log('验证成功:', response);
-      return response;
-    })
-    .catch(error => {
-      // 如果请求失败，抛出错误
-      console.error('验证失败:', error);
-      throw error;
-    });
-}
+    console.log('验证成功:', response, 'id', id, '密码', password);
+
+    // 假设 token 存在于响应数据中
+    const token = response.response.token;
+	console.log(token);
+    return response;
+  } catch (error) {
+    console.error('验证失败:', error);
+    throw error;
+  }
+};
+
+export default loginAPI;
