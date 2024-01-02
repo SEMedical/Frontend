@@ -58,11 +58,11 @@
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月第{{weekOfMonth}}周的这几天，您的血糖值有：</text>
 			<br>
-			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
+			<text class="highText">{{this.highStatistic}}%时间偏高</text>
 			<br>
-			<text class="normalText">{{this.normalStatistic.value}}%时间正常</text>
+			<text class="normalText">{{this.normalStatistic}}%时间正常</text>
 			<br>
-			<text class="lowText">{{this.lowStatistic.value}}%时间偏低</text>
+			<text class="lowText">{{this.lowStatistic}}%时间偏低</text>
 		</uni-card> 
 		
 	</view>	
@@ -188,14 +188,34 @@ export default{
 				console.log(startDate);
 				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', startDate);
 				console.log(response);
-				this.highStatistic.value =response.hyperglycemia;
-				this.lowStatistic.value = response.hypoglycemia;
-				this.normalStatistic.value = response.euglycemia;
-				this.weeklyBloodSugar = response.entry;
+				this.highStatistic =response.hyperglycemiaPercentage;
+				this.lowStatistic = response.hypoglycemiaPercentage;
+				this.normalStatistic = response.euGlycemiaPercentage;
+				this.weeklyBloodSugar = [];
 				console.log(this.weeklyBloodSugar);
 				
+				this.weeklyBloodSugar=[];
+				console.log(this.weeklyBloodSugar);
+				
+				response.data.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+					
+					console.log("Time"+time);
+					const entry = {
+					    min_val: value.minValue,
+					    max_val: value.maxValue,
+					    time: value.time
+					  };
+					this.weeklyBloodSugar.push(entry);
+					}
+				 );
+				this.weeklyBloodSugar.forEach(item=>{
+					console.log(Object.keys(item)[0]);
+				})
+				
 				//将血糖数据存储在数组中
-				const timeArray = this.weeklyBloodSugar.map(item => this.formatTime(item => item.time));
+				const timeArray = this.weeklyBloodSugar.map(item => this.formatTime(item.time));
 				const maxArray = this.weeklyBloodSugar.map(item => item.max_val);
 				const minArray = this.weeklyBloodSugar.map(item => item.min_val);
 				this.chartData = {
