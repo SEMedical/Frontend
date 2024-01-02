@@ -6,7 +6,8 @@ export default{
 		return request(`/api/glycemia/realTime`, 'GET')
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.date;
+			console.log(response.data);
+			return response.response;
 		})
 		.catch(error => {
 			throw error;

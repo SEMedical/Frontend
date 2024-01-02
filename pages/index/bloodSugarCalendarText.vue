@@ -113,6 +113,7 @@ export default{
 		    try {
 		        const response = await bloodSugar.realTimeBloodSugar();
 		        this.bloodsugar.value = response;
+				console.log(this.bloodsugar);
 		        // 在这里可以进行其他的初始化操作
 		    } catch (error) {
 		        console.error('获取血糖数据时出错：', error);
