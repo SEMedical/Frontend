@@ -35,6 +35,7 @@
 </template>
 
 <script>
+	
 </script>
 
 <style scoped>
@@ -93,7 +94,6 @@
 	}
 	.sportSchemeText{
 		font-size: 25px; /* 替换 18px 为你想要的字体大小 */
-		
 		margin-bottom: 10px;
 		color: black;
 		margin-left: 10px;

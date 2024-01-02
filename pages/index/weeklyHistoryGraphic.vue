@@ -34,14 +34,14 @@
 						</button>
 					</uni-col> -->
 					<!-- <uni-col :span="20"> -->
-						<view class="charts-box">
-							<qiun-data-charts 
-								type="line"
-								:opts="opts"
-							    :chartData="chartData"
-								:ontouch="true"
-							/>
-						</view>
+					<view class="charts-box">
+						<qiun-data-charts 
+							type="line"
+							:opts="opts"
+							:chartData="chartData"
+							:ontouch="true"
+						/>
+					</view>
 					<!-- </uni-col>
 					<uni-col :span="1">
 					    <button class="leftAndRightButton" @tap="rightButton()">
@@ -197,7 +197,6 @@ export default{
 				const timeArray = this.weeklyBloodSugar.map(item => this.formatTime(item => item.time));
 				const maxArray = this.weeklyBloodSugar.map(item => item.max_val);
 				const minArray = this.weeklyBloodSugar.map(item => item.min_val);
-						
 				this.chartData = {
 				    categories: timeArray,
 					series: [
