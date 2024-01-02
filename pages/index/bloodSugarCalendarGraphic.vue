@@ -196,50 +196,65 @@ export default{
 				const response1 = await todayBloodSugar.getGlycemiaData('realtime');
 				this.dayBloodSugar =response1;
 				console.log(response1);
+				response1.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+					if(typeof value!=='undefined')
+						this.dayBloodSugar.push({ time: time, value: value }); 
+					}
+				 );
 			    // 直接使用存储在 dayBloodSugar 中的数据
-			    const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
-			    const valueArray = this.dayBloodSugar.map(item => item.value);
+			    const timeArray0 = this.dayBloodSugar.map(item => this.formatTime(Object.keys(item)[0]));
+			    const valueArray0 = this.dayBloodSugar.map(item => (item.time !== 'undefined' ? item.value : 0));
+				const timeArray = timeArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== ''&& (item!=='NaN:NaN');
+				});
+				const valueArray= valueArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== '';
+				});
+				console.log("Time"+timeArray)
+				console.log("Value"+valueArray)
 			   //获取运动数据
-			   const today = new Date();
-			   const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-			   const response = await todaySportTime.getExerciseTime('realtime', date);
-			   this.daySportTime =response;
-			   console.log(response);
-			    // 添加运动时段标记线
-			    const markLines = this.daySportTime.map(item => {
-			        return {
-			            type: 'solid', // 实线
-			            dashLength: 4,
-			            data: [
-			                {
-			                    value: this.formatTime(item.start_time),
-			                    lineColor: '#00aaff',
-			                    showLabel: true,
-			                    labelAlign: 'right',
-			                    labelOffsetX: 5,
-			                    labelOffsetY: 0,
-			                    labelPadding: 6,
-			                    labelFontSize: 13,
-			                    labelFontColor: '#666666',
-			                    labelBgColor: '#DFE8FF',
-			                    labelBgOpacity: 0.8,
-			                },
-			                {
-			                    value: this.formatTime(item.end_time),
-			                    lineColor: '#55ff7f',
-			                    showLabel: true,
-			                    labelAlign: 'left',
-			                    labelOffsetX: 5,
-			                    labelOffsetY: 0,
-			                    labelPadding: 6,
-			                    labelFontSize: 13,
-			                    labelFontColor: '#666666',
-			                    labelBgColor: '#DFE8FF',
-			                    labelBgOpacity: 0.8,
-			                },
-			            ],
-			        };
-			    });
+			   // const today = new Date();
+			   // const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+			   // const response = await todaySportTime.getExerciseTime('realtime', date);
+			   // this.daySportTime =response;
+			   // console.log(response);
+			   //  // 添加运动时段标记线
+			   //  const markLines = this.daySportTime.map(item => {
+			   //      return {
+			   //          type: 'solid', // 实线
+			   //          dashLength: 4,
+			   //          data: [
+			   //              {
+			   //                  value: this.formatTime(item.start_time),
+			   //                  lineColor: '#00aaff',
+			   //                  showLabel: true,
+			   //                  labelAlign: 'right',
+			   //                  labelOffsetX: 5,
+			   //                  labelOffsetY: 0,
+			   //                  labelPadding: 6,
+			   //                  labelFontSize: 13,
+			   //                  labelFontColor: '#666666',
+			   //                  labelBgColor: '#DFE8FF',
+			   //                  labelBgOpacity: 0.8,
+			   //              },
+			   //              {
+			   //                  value: this.formatTime(item.end_time),
+			   //                  lineColor: '#55ff7f',
+			   //                  showLabel: true,
+			   //                  labelAlign: 'left',
+			   //                  labelOffsetX: 5,
+			   //                  labelOffsetY: 0,
+			   //                  labelPadding: 6,
+			   //                  labelFontSize: 13,
+			   //                  labelFontColor: '#666666',
+			   //                  labelBgColor: '#DFE8FF',
+			   //                  labelBgOpacity: 0.8,
+			   //              },
+			   //          ],
+			   //      };
+			   //  });
 
 
 			    this.chartData = {
@@ -250,12 +265,12 @@ export default{
 			                data: valueArray
 			            },
 			        ],
-					markLine: {
-					    data: markLines,
-					},
+					// markLine: {
+					//     data: markLines,
+					// },
 			    };
 			} catch (error) {
-			    console.error('获取本日数据时出错：', error);
+			    console.log('获取本日数据时出错：', error);
 			}
 		},		
 		

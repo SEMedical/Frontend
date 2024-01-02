@@ -132,9 +132,17 @@ export default{
 		//获取当日血糖数据
 		async loadDayBloodSugar(){
 		    try{
-				const response = await todayBloodSugar.getGlycemiaData('realtime');
-				this.dayBloodSugar =response;
-				console.log(response);
+				const response = await todayBloodSugar.getGlycemiaData('Realtime');
+				this.dayBloodSugar.value =response;
+				response.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+				 	this.dayBloodSugar.push({ time: time, value: value }); 
+					}
+				 );
+				
+				const val=item[time];
+				console.log("Response****"+this.dayBloodSugar);
 			}	
 			catch(error){
 				console.error('获取本日血糖数据时出错：',error);
@@ -164,10 +172,10 @@ export default{
 		    // 获取时、分、秒
 		    const hours = date.getHours().toString().padStart(2, '0');
 		    const minutes = date.getMinutes().toString().padStart(2, '0');
-		    const seconds = date.getSeconds().toString().padStart(2, '0');
-		      
+		    //const seconds = date.getSeconds().toString().padStart(2, '0');
+		    console.log(`${hours}:${minutes}}`);
 		    // 拼接时分秒
-		    return `${hours}:${minutes}:${seconds}`;
+		    return `${hours}:${minutes}`;
 		},
 	},
 }
