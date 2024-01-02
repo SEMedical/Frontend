@@ -185,11 +185,12 @@ export default{
 		async getBloodSugarData(){
 			try{
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
+				console.log(startDate);
 				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', startDate);
 				console.log(response);
-				this.highStatistic.value =response.hyper_percent;
-				this.normalStatistic.value = response.eu_percent;
-				this.lowStatistic.value = response.hypo_percent;
+				this.highStatistic.value =response.hyperglycemia;
+				this.lowStatistic.value = response.hypoglycemia;
+				this.normalStatistic.value = response.euglycemia;
 				this.weeklyBloodSugar = response.entry;
 				console.log(this.weeklyBloodSugar);
 				

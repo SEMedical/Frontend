@@ -188,7 +188,7 @@ export default{
 			try{
 				//获取血糖和统计值数据
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
-				const response = await monthlyBloodSugarData.getmonthlyOrWeeklyGlycemia('month', startDate);
+				const response = await monthlyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', startDate);
 				console.log(response);
 				this.highStatistic.value =response.hyper_percent;
 				this.normalStatistic.value = response.eu_percent;
@@ -197,7 +197,7 @@ export default{
 				console.log(this.monthBloodSugar);
 				
 				//将血糖数据存储在数组中
-				const timeArray = this.monthBloodSugar.map(item => this.formatTime(item => item.time));
+				/* const timeArray = this.monthBloodSugar.map(item => this.formatTime(item => item.time));
 				const maxArray = this.monthBloodSugar.map(item => item.max_val);
 				const minArray = this.monthBloodSugar.map(item => item.min_val);
 						
@@ -213,7 +213,7 @@ export default{
 							data:minArray
 						},
 					],
-				};
+				}; */
 				
 			} catch(error){
 				console.log('获取该月数据时出错：' + error);

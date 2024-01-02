@@ -55,11 +55,11 @@
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月第{{weekOfMonth}}周的这几天，您的血糖值有：</text>
 			<br>
-			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
+			<text class="highText">{{this.highStatistic}}%时间偏高</text>
 			<br>
-			<text class="normalText">{{this.normalStatistic.value}}%时间正常</text>
+			<text class="normalText">{{this.normalStatistic}}%时间正常</text>
 			<br>
-			<text class="lowText">{{this.lowStatistic.value}}%时间偏低</text>
+			<text class="lowText">{{this.lowStatistic}}%时间偏低</text>
 		</uni-card> 
 		
 	</view>	
@@ -128,12 +128,31 @@ export default{
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
 				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week',  startDate);
 				console.log(response);
-				this.highStatistic.value =response.hyper_percent;
-				this.normalStatistic.value = response.eu_percent;
-				this.lowStatistic.value = response.hypo_percent;
-				this.weeklyBloodSugar = response.entry;
+				this.highStatistic =response.hyperglycemiaPercentage;
+				this.lowStatistic = response.hypoglycemiaPercentage;
+				this.normalStatistic = response.euGlycemiaPercentage;
+				
+				this.weeklyBloodSugar=[];
 				console.log(this.weeklyBloodSugar);
 				
+				response.data.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+					
+					console.log("Time"+time);
+					const entry = {
+					    min_val: value.minValue,
+					    max_val: value.maxValue,
+					    time: value.time
+					  };
+					this.weeklyBloodSugar.push(entry);
+					}
+				 );
+				this.weeklyBloodSugar.forEach(item=>{
+					console.log(Object.keys(item)[0]);
+				})
+				//const val=item[time];
+				//console.log("Response****"+this.dayBloodSugar);
 			} catch(error){
 				console.error('获取月血糖数据时出错：' + error);
 			}
