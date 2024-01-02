@@ -188,9 +188,9 @@ export default{
 				console.log(startDate);
 				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', startDate);
 				console.log(response);
-				this.highStatistic =response.hyperglycemiaPercentage;
-				this.lowStatistic = response.hypoglycemiaPercentage;
-				this.normalStatistic = response.euGlycemiaPercentage;
+				this.highStatistic =response.hyperglycemiaPercentage.toFixed(2);
+				this.lowStatistic = response.hypoglycemiaPercentage.toFixed(2);
+				this.normalStatistic = response.euGlycemiaPercentage.toFixed(2);
 				this.weeklyBloodSugar = [];
 				console.log(this.weeklyBloodSugar);
 				

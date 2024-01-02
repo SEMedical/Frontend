@@ -27,6 +27,19 @@
 					</uni-col>
 				</uni-row>
 				<br>
+				<!--展示血糖文本数据-->
+				<uni-row class="demo-uni-row">
+					<uni-col :span="8">
+						<text class="bloodSugerText">日期</text>
+					</uni-col>
+					<uni-col :span="8">
+						<text class="bloodSugerText">最高值</text>
+					</uni-col>
+					<uni-col :span="8">
+						<text class="bloodSugerText">最低值</text>
+					</uni-col>
+				</uni-row>
+				<br>
 				<view class="uni-padding-wrap uni-common-mt">
 					<view>
 						<scroll-view scroll-y="true" class="scroll-Y">
@@ -128,9 +141,9 @@ export default{
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
 				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week',  startDate);
 				console.log(response);
-				this.highStatistic =response.hyperglycemiaPercentage;
-				this.lowStatistic = response.hypoglycemiaPercentage;
-				this.normalStatistic = response.euGlycemiaPercentage;
+				this.highStatistic =response.hyperglycemiaPercentage.toFixed(2);
+				this.lowStatistic = response.hypoglycemiaPercentage.toFixed(2);
+				this.normalStatistic = response.euGlycemiaPercentage.toFixed(2);
 				
 				this.weeklyBloodSugar=[];
 				console.log(this.weeklyBloodSugar);

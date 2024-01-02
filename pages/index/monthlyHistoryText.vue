@@ -135,9 +135,9 @@ export default{
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
 				const response = await monthlyBloodSugarData.getmonthlyOrWeeklyGlycemia('month', startDate);
 				console.log(response);
-				this.highStatistic =response.hyperglycemiaPercentage;
-				this.normalStatistic = response.euGlycemiaPercentage;
-				this.lowStatistic = response.hypoglycemiaPercentage;
+				this.highStatistic =response.hyperglycemiaPercentage.toFixed(2);
+				this.normalStatistic = response.euGlycemiaPercentage.toFixed(2);
+				this.lowStatistic = response.hypoglycemiaPercentage.toFixed(2);
 				this.monthBloodSugar = [];
 				console.log(this.monthBloodSugar);
 				
