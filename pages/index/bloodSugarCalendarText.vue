@@ -87,6 +87,7 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
+			color: ref([]),  //存储血糖小贴士应该用的颜色
 	    }
 	},
 	mounted() {
@@ -121,7 +122,8 @@ export default{
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
-				this.prompt.value = response;
+				this.prompt.value = response.tip;
+				this.color.value = response.color;
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
@@ -130,7 +132,7 @@ export default{
 		//获取当日血糖数据
 		async loadDayBloodSugar(){
 		    try{
-				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
+				const response = await todayBloodSugar.getGlycemiaData('realtime');
 				this.dayBloodSugar =response;
 				console.log(response);
 			}	
@@ -139,16 +141,22 @@ export default{
 			}
 		},
 		
-		getStyle(){
-			const value = this.bloodsugar.value;
-			if (value > 80) {
-			    return { color: 'red' };
-			} else if (value < 45) {
-			    return { color: 'orange' };
-			} else {
-			    return { color: 'green' };
-			}
+		// 修改 getStyle 方法
+		getStyle() {
+		    const color = this.color.value;
+		
+		    switch (color) {
+		        case 'RED':
+		            return { color: 'red' };
+		        case 'ORANGE':
+		            return { color: 'orange' };
+		        case 'GREEN':
+		            return { color: 'green' };
+		        default:
+		            return { color: 'black' }; // 默认值，可以根据需要修改
+		    }
 		},
+
 		formatTime(dateTime) {
 		    // 将字符串时间转换为 Date 对象
 		    const date = new Date(dateTime);

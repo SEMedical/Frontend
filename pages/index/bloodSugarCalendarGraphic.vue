@@ -109,6 +109,7 @@ export default{
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
 			daySportTime:[], //存储当天的运动时段
+			color:ref([]),    //存储血糖贴士的颜色
 	    }
 	},
 	mounted() {
@@ -143,21 +144,26 @@ export default{
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
-				this.prompt.value = response;
+				this.prompt.value = response.tip;
+				this.color.value = response.color;
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
 			}
 		},
-		getStyle(){
-			const value = this.bloodsugar.value;
-			if (value > 80) {
-			    return { color: 'red' };
-			} else if (value < 45) {
-			    return { color: 'orange' };
-			} else {
-			    return { color: 'green' };
-			}
+		getStyle() {
+		    const color = this.color.value;
+		
+		    switch (color) {
+		        case 'RED':
+		            return { color: 'red' };
+		        case 'ORANGE':
+		            return { color: 'orange' };
+		        case 'GREEN':
+		            return { color: 'green' };
+		        default:
+		            return { color: 'black' }; // 默认值，可以根据需要修改
+		    }
 		},
 		
 		formatTime(dateTime) {
@@ -187,14 +193,16 @@ export default{
 		async getChartAndSportData() {
 			try {
 				//获取血糖数据
-				const response1 = await todayBloodSugar.getGlycemiaData('realtime','12');
+				const response1 = await todayBloodSugar.getGlycemiaData('realtime');
 				this.dayBloodSugar =response1;
 				console.log(response1);
 			    // 直接使用存储在 dayBloodSugar 中的数据
 			    const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
 			    const valueArray = this.dayBloodSugar.map(item => item.value);
 			   //获取运动数据
-			   const response = await todaySportTime.getExerciseTime('realtime','12');
+			   const today = new Date();
+			   const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+			   const response = await todaySportTime.getExerciseTime('realtime', date);
 			   this.daySportTime =response;
 			   console.log(response);
 			    // 添加运动时段标记线

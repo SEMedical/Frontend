@@ -188,7 +188,7 @@ export default{
 			try{
 				//获取血糖和统计值数据
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
-				const response = await monthlyBloodSugarData.getmonthlyOrWeeklyGlycemia('month', '12', startDate);
+				const response = await monthlyBloodSugarData.getmonthlyOrWeeklyGlycemia('month', startDate);
 				console.log(response);
 				this.highStatistic.value =response.hyper_percent;
 				this.normalStatistic.value = response.eu_percent;

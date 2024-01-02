@@ -223,7 +223,8 @@ export default{
 		async getBloodSugarAndSportData(){
 			try{
 				//获取血糖和统计值数据
-				const response = await DayBloodSugar.getdailyGlycemia();
+				const date = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
+				const response = await DayBloodSugar.getdailyGlycemia(date);
 				this.highStatistic.value = response.highSta;
 				this.normalStatistic.value = response.normalSta;
 				this.lowStatistic.value =response.lowSta;
@@ -238,7 +239,7 @@ export default{
 				const valueArray = this.dayBloodSugar.map(item => item.value);
 				
 				//获取运动数据
-				const sportResponse = await DaySportTime.getExerciseTime('realtime','12');
+				const sportResponse = await DaySportTime.getExerciseTime('realtime',date);
 				this.daySportTime =sportResponse;
 				console.log(sportResponse);
 				

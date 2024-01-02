@@ -129,7 +129,8 @@ export default{
 		//从接口获取统计值和血糖数值
 	    async getDayBloodSugarData(){
 	    	try{
-	    		const response = await DayBloodSugar.getdailyGlycemia();
+				const date = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
+	    		const response = await DayBloodSugar.getdailyGlycemia(date);
 	    		this.highStatistic.value = response.highSta;
 	    		this.normalStatistic.value = response.normalSta;
 	    		this.lowStatistic.value =response.lowSta;

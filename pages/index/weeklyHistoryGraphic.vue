@@ -19,7 +19,8 @@
 			<view class="empty-body">
 				<uni-row class="demo-uni-row">
 					<uni-col :span="14">
-						<button class="selectDayButton" @tap="goToNowButton()">回本周</button>
+						<button v-if="!isCurrentWeek()" class="selectDayButton" @tap="goToNowButton()">回本周</button>
+						<text v-if = "isCurrentWeek()">&nbsp;</text>
 					</uni-col>
 					<uni-col :span="10">
 						<button class="selectDayButton" @tap="goToSelectRecordType()">选择</button>
@@ -184,7 +185,7 @@ export default{
 		async getBloodSugarData(){
 			try{
 				const startDate = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
-				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', '12', startDate);
+				const response = await weeklyBloodSugarData.getmonthlyOrWeeklyGlycemia('week', startDate);
 				console.log(response);
 				this.highStatistic.value =response.hyper_percent;
 				this.normalStatistic.value = response.eu_percent;
@@ -264,6 +265,33 @@ export default{
 			this.loadedDate.day = monday.getDate();
 			
 			this.getBloodSugarData(); // 重新渲染页面
+		},
+		// 检查 loadedDate 是否在当前日期所在的这一周
+		isCurrentWeek() {
+		    const today = new Date();
+		    const todayYear = today.getFullYear();
+		    const todayMonth = today.getMonth() + 1;
+		    const todayDay = today.getDate();
+		
+		    const loadedDateYear = this.loadedDate.year;
+		    const loadedDateMonth = this.loadedDate.month;
+		    const loadedDateDay = this.loadedDate.day;
+		
+		    const daysDifference = Math.floor((today - new Date(loadedDateYear, loadedDateMonth - 1, loadedDateDay)) / (1000 * 60 * 60 * 24));
+		
+		    return (
+		        (loadedDateYear === todayYear || (loadedDateYear === todayYear - 1 && todayMonth === 1 && loadedDateMonth === 12)) &&
+		        loadedDateMonth === todayMonth &&
+		        daysDifference >= 0 &&
+		        daysDifference < 7
+		    ) || (
+		        loadedDateYear === todayYear &&
+		        loadedDateMonth !== todayMonth &&
+		        loadedDateMonth === todayMonth - 1 &&
+		        daysDifference > 24 &&
+		        daysDifference < 31 &&
+		        today.getDate() <= 7
+		    );
 		},
 	}
 }
