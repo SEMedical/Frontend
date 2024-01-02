@@ -9,7 +9,7 @@ export default{
 		return request(`/api/sports/startDoingSport`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -23,7 +23,7 @@ export default{
 		return request(`/api/sports/stopDoingSport`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -37,7 +37,7 @@ export default{
 		return request(`/api/sports/sportPlan`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -51,7 +51,7 @@ export default{
 		return request(`/api/sports/questionnaire1`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -65,7 +65,7 @@ export default{
 		return request(`/api/sports/questionnaire2`, 'POST',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -79,7 +79,7 @@ export default{
 		return request(`/api/sports/recommendedSportPlan`, 'POST',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -93,7 +93,7 @@ export default{
 		return request(`/api/sports/chooseSportPlan`, 'POST',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -107,7 +107,7 @@ export default{
 		return request(`/api/sports/realtimeSportData`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -121,7 +121,7 @@ export default{
 		return request(`/api/sports/realTimeHeartRate`, 'GET', {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response.heart_rate;
+			return response.heart_rate;
 		})
 		.catch(error => {
 			throw error;
@@ -136,7 +136,7 @@ export default{
 		return request(`/api/sports/sportRecord`, 'GET')
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;
@@ -150,7 +150,7 @@ export default{
 		return request(`/api/sports/detailedSportRecord`, 'POST',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response;
+			return response;
 		})
 		.catch(error => {
 			throw error;

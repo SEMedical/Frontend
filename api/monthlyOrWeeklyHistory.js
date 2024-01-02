@@ -11,7 +11,7 @@ export default{
 	    return request('/api/glycemia/weeklyOrMonthlyRecord', 'GET', params)
 	        .then(response => {
 	        console.log('后端响应:', response);
-	        return response.response; // 返回血糖数据的response部分，response共包括一个entry，一个hyper_percent，一个hypo_percent，一个eu_percent
+	        return response; // 返回血糖数据的response部分，response共包括一个entry，一个hyper_percent，一个hypo_percent，一个eu_percent
 	    })
 	    .catch(error => {
 	      throw error;

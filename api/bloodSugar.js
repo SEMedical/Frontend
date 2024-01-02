@@ -6,7 +6,7 @@ export default{
 		return request(`/api/glycemia/realTime`, 'GET')
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.response.bloodSugar;
+			return response.bloodSugar;
 		})
 		.catch(error => {
 			throw error;

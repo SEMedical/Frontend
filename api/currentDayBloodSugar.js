@@ -11,7 +11,7 @@ export default{
 	    return request('/api/glycemia/chart', 'GET', params)
 	        .then(response => {
 	        console.log('后端响应:', response);
-	        return response.response.entry; // 返回血糖数据的entry数组
+	        return response.entry; // 返回血糖数据的entry数组
 	    })
 	    .catch(error => {
 	      throw error;

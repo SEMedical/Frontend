@@ -11,7 +11,7 @@ export default{
 	    return request('/api/glycemia/isExercise', 'GET', params)
 	        .then(response => {
 	        console.log('后端响应:', response);
-	        return response.response.intervals; // 返回血糖数据的entry数组
+	        return response.intervals; // 返回血糖数据的entry数组
 	    })
 	    .catch(error => {
 	      throw error;
