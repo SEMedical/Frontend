@@ -9,8 +9,8 @@
     <!-- 下半部分 - 白色 -->
     <view class="lower-half white-background">
       	<view style="font-size: 25px; font-weight: bold;">您已快走{{ distance }}公里，<br>
-		用时{{time}},<br>当前心率{{heart_rate}},<br>
-		当前配速{{speed}},<br>已消耗{{calorie}}kcal</view>
+		用时{{time}},<br>当前心率{{heart_rate}}次/分钟,<br>
+		当前配速{{speed/100}}m/s,<br>已消耗{{calorie}}kcal</view>
     </view>
 	<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 		<button class="flex-item green-button floating-button" @click="stopDoingSport">
