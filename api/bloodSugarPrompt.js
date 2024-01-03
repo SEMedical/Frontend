@@ -7,7 +7,7 @@ export default{
 			.then(response => {
 			console.log('后端响应:', response);
 			console.log('后端响应:', response.response);
-			return response;     //包含一个string类型的color和一个string类型的tip
+			return response.response;     //包含一个string类型的color和一个string类型的tip
 		})
 		.catch(error => {
 			throw error;

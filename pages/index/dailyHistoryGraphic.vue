@@ -229,9 +229,6 @@ export default{
 				console.log(response.highSta);
 				this.normalStatistic = response.normalSta.toFixed(2);
 				this.lowStatistic =response.lowSta.toFixed(2);
-				console.log(this.highStatistic.value);
-				console.log(this.normalStatistic.value);
-				console.log(this.lowStatistic.value);
 				this.dayBloodSugar = response.entry;
 				console.log(this.dayBloodSugar);
 				

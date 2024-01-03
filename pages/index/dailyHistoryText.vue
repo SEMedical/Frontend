@@ -44,7 +44,7 @@
 							    <uni-grid-item v-for="entry in dayBloodSugar" :key="entry.time">
 									<uni-row class="demo-uni-row">
 										<uni-col :span="10">
-											 <view class="time">{{ formatTime(entry.time) }}</view>
+											<view class="time">{{ formatTime(entry.time) }}</view>
 										</uni-col>
 										<uni-col :span="14">
 											<view class="value" >{{ entry.value }}mmol/L</view>
@@ -62,11 +62,11 @@
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月{{this.loadedDate.day}}日，您的血糖值有：</text>
 			<br>
-			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
+			<text class="highText">{{this.highStatistic}}%时间偏高</text>
 			<br>
-			<text class="normalText">{{this.normalStatistic.value}}%时间正常</text>
+			<text class="normalText">{{this.normalStatistic}}%时间正常</text>
 			<br>
-			<text class="lowText">{{this.lowStatistic.value}}%时间偏低</text>
+			<text class="lowText">{{this.lowStatistic}}%时间偏低</text>
 		</uni-card>
 		
 	</view>
@@ -131,13 +131,18 @@ export default{
 	    	try{
 				const date = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
 	    		const response = await DayBloodSugar.getdailyGlycemia(date);
-	    		this.highStatistic.value = response.highSta.toFixed(2);
-	    		this.normalStatistic.value = response.normalSta.toFixed(2);
-	    		this.lowStatistic.value =response.lowSta.toFixed(2);
-	    		console.log(this.highStatistic.value);
-	    		console.log(this.normalStatistic.value);
-	    		console.log(this.lowStatistic.value);
-	    		this.dayBloodSugar = response.entry;
+	    		this.highStatistic = response.highSta.toFixed(2);
+	    		this.normalStatistic = response.normalSta.toFixed(2);
+	    		this.lowStatistic =response.lowSta.toFixed(2);
+	    		console.log(this.highStatistic);
+	    		console.log(this.normalStatistic);
+	    		console.log(this.lowStatistic);
+	    		this.dayBloodSugar =[];
+				response.entry.forEach(item => {
+					const time = Object.keys(item)[0];
+					const value = item [time];
+					this.dayBloodSugar.push({ time: time, value: value });
+				});
 	    		console.log(this.dayBloodSugar);
 	    	} catch(error){
 	    		console.error('获取日血糖数据时出错：' + error);

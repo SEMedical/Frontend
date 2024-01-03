@@ -69,7 +69,7 @@
 				</uni-row>
 			</view>
 			<br>
-			<text :style= "getStyle()" class="prompt">{{ prompt.value }}</text>
+			<text :style= "getStyle()" class="prompt">{{ prompt }}</text>
 		</uni-card>
 	</view>
 </template>
@@ -123,8 +123,9 @@ export default{
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
-				this.prompt.value = response.tip;
-				this.color.value = response.color;
+				this.prompt= response.tip;
+				console.log(this.prompt)
+				this.color= response.color;
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
@@ -152,7 +153,7 @@ export default{
 		
 		// 修改 getStyle 方法
 		getStyle() {
-		    const color = this.color.value;
+		    const color = this.color;
 		
 		    switch (color) {
 		        case 'RED':
