@@ -28,26 +28,26 @@
 				</uni-row>
 				
 				<uni-row class="demo-uni-row">
-					<uni-col :span="1">
+					<!-- <uni-col :span="1">
 						<button class="leftAndRightButton" @tap="leftButton()">
 							&lt
 						</button>
-					</uni-col>
-					<uni-col :span="20">
-						<view class="charts-box">
-							<qiun-data-charts 
-								type="line"
-								:opts="opts"
-							    :chartData="chartData"
-								:ontouch="true"
-							/>
-						</view>
-					</uni-col>
-					<uni-col :span="1">
+					</uni-col> -->
+					<!-- <uni-col :span="20"> -->
+					<view class="charts-box">
+						<qiun-data-charts 
+							type="line"
+							:opts="opts"
+							:chartData="chartData"
+							:ontouch="true"
+						/>
+					</view>
+					<!-- </uni-col> -->
+					<!-- <uni-col :span="1">
 					    <button class="leftAndRightButton" @tap="rightButton()">
 						    &gt					
 					   </button>
-					</uni-col>
+					</uni-col> -->
 				</uni-row>
 				
 				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息。蓝色线表示运动的开始时间，绿色线表示运动的结束时间。</text>
