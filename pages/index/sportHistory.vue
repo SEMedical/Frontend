@@ -7,11 +7,11 @@
 				<uni-row class="demo-uni-row" :width="nvueWidth">
 					<uni-col :span="12">
 						<view  class="smallTitle">运动</view>
-						<view class="sportData">320分钟</view>
+						<view class="sportData">{{total_minute}}分钟</view>
 					</uni-col>
 					<uni-col :span="12">
 						<view  class="smallTitle">消耗</view>
-						<view class="sportData">2286千卡</view>
+						<view class="sportData">{{total_calorie}}千卡</view>
 					</uni-col>
 				</uni-row>
 				
@@ -30,60 +30,67 @@
 					
 				</uni-card>
 				
-				<uni-card :is-shadow="false"  style="border-radius: 20px;margin-top: 20px;">
+				<uni-card :is-shadow="false" v-if=showRunningMinute style="border-radius: 20px;margin-top: 20px;">
 					<text class="thirdTitle" style="margin-left: 20px;">注：以下数据皆来自于近七天</text>
 					<view class="smallTitle">跑步</view>
 					<!-- <view class="thirdTitle">近7天</view> -->
 					<uni-row class="demo-uni-row" :width="nvueWidth">
 						<uni-col :span="12">
 							<view class="thirdTitle">总时长</view>
-							<view class="sportData">200分钟</view>
+							<view class="sportData">{{running_minute}}分钟</view>
 						</uni-col>
 						<uni-col :span="12">
 							<view class="thirdTitle">共消耗</view>
-							<view class="sportData">1866千卡</view>
+							<view class="sportData">{{running_calorie}}千卡</view>
 						</uni-col>
 					</uni-row>
 				</uni-card>			
-				<uni-card :is-shadow="false">
-					<view class="smallTitle">骑行</view>
+				<uni-card :is-shadow="false" v-if=showJoggingMinute style="border-radius: 20px;margin-top: 20px;">
+					<text class="thirdTitle" style="margin-left: 20px;">注：以下数据皆来自于近七天</text>
+					<view class="smallTitle">慢跑</view>
+					<!-- <view class="thirdTitle">近7天</view> -->
 					<uni-row class="demo-uni-row" :width="nvueWidth">
 						<uni-col :span="12">
 							<view class="thirdTitle">总时长</view>
-							<view class="sportData">30分钟</view>
+							<view class="sportData">{{jogging_minute}}分钟</view>
 						</uni-col>
 						<uni-col :span="12">
 							<view class="thirdTitle">共消耗</view>
-							<view class="sportData">210千卡</view>
+							<view class="sportData">{{jogging_calorie}}千卡</view>
+						</uni-col>
+					</uni-row>
+				</uni-card>	
+				<uni-card :is-shadow="false" v-if=showYogaMinute style="border-radius: 20px;margin-top: 20px;">
+					<text class="thirdTitle" style="margin-left: 20px;">注：以下数据皆来自于近七天</text>
+					<view class="smallTitle">瑜伽</view>
+					<!-- <view class="thirdTitle">近7天</view> -->
+					<uni-row class="demo-uni-row" :width="nvueWidth">
+						<uni-col :span="12">
+							<view class="thirdTitle">总时长</view>
+							<view class="sportData">{{yoga_minute}}分钟</view>
+						</uni-col>
+						<uni-col :span="12">
+							<view class="thirdTitle">共消耗</view>
+							<view class="sportData">{{yoga_calorie}}千卡</view>
+						</uni-col>
+					</uni-row>
+				</uni-card>	
+				<uni-card :is-shadow="false" v-if=showRopeskippingMinute style="border-radius: 20px;margin-top: 20px;">
+					<text class="thirdTitle" style="margin-left: 20px;">注：以下数据皆来自于近七天</text>
+					<view class="smallTitle">跳绳</view>
+					<!-- <view class="thirdTitle">近7天</view> -->
+					<uni-row class="demo-uni-row" :width="nvueWidth">
+						<uni-col :span="12">
+							<view class="thirdTitle">总时长</view>
+							<view class="sportData">{{ropeSkipping_minute}}分钟</view>
+						</uni-col>
+						<uni-col :span="12">
+							<view class="thirdTitle">共消耗</view>
+							<view class="sportData">{{ropeSkipping_calorie}}千卡</view>
 						</uni-col>
 					</uni-row>
 				</uni-card>
-				<uni-card :is-shadow="false">
-					<view class="smallTitle">瑜伽</view>
-					<uni-row class="demo-uni-row" :width="nvueWidth">
-						<uni-col :span="12">
-							<view class="thirdTitle">总时长</view>
-							<view class="sportData">90分钟</view>
-						</uni-col>
-						<uni-col :span="12">
-							<view class="thirdTitle">共消耗</view>
-							<view class="sportData">210千卡</view>
-						</uni-col>
-					</uni-row>
-				</uni-card>
-				<!-- <uni-card :is-shadow="false">
-					<view class="smallTitle">瑜伽</view>
-					<uni-row class="demo-uni-row" :width="nvueWidth">
-						<uni-col :span="12">
-							<view class="thirdTitle">总时长</view>
-							<view class="sportData">1234分钟</view>
-						</uni-col>
-						<uni-col :span="12">
-							<view class="thirdTitle">共消耗</view>
-							<view class="sportData">1234千卡</view>
-						</uni-col>
-					</uni-row>
-				</uni-card> -->
+				
 			
 		</scroll-view>
 		
@@ -94,13 +101,33 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import sportAPI from '@/api/sport.js';
-
-
 const sport_list = ref([]);
 const total_sport = ref([]);
 const minute_record = ref([]);
 const chartData = ref([]);
+const total_minute=ref([]);
+
+const total_calorie=ref([]);
+const running_minute=ref();
+const running_calorie=ref();
+const yoga_minute=ref();
+const yoga_calorie=ref();
+const jogging_minute=ref();
+const jogging_calorie=ref();
+const ropeSkipping_minute=ref();
+const ropeSkipping_calorie=ref();
 //存储图片的配置选项
+const showRunningMinute = computed(() => {
+  return running_minute.value!==null && running_minute.value!==undefined	;
+});
+const showJoggingMinute = computed(() => {
+  return jogging_minute.value!==null && jogging_minute.value!==undefined;
+});
+const showYogaMinute = computed(() => {
+  return yoga_minute.value!==null && yoga_minute.value!==undefined;
+});const showRopeskippingMinute = computed(() => {
+  return ropeSkipping_minute.value!==null&& ropeSkipping_minute.value!==undefined;
+});
 const opts= ref ({
 	color: ["#00ff00"], // 血糖折线的颜色
 	padding: [15, 10, 0, 15],
@@ -146,7 +173,7 @@ const opts= ref ({
 	const day = date.getDate().toString().padStart(2, '0');
 	  
 	// 拼接月日
-	return `${month}-${day}`;
+	return `${month}-${day}`
 }; */
 
 
@@ -154,10 +181,28 @@ const opts= ref ({
 const getSportRecord = async () => {
   try {
 	  //获取每天的运动分钟数
-    const response = await sportAPI.sportRecord();
+    const res = await sportAPI.getSportRecord();
+	console.log("xxxx",res);
+	const response=res.response;
+	console.log(response);
 	minute_record.value = response.minute_record;
-	console.log(minute_record.value);
+	total_minute.value=response.total_minute;
+	total_calorie.value=response.total_calorie;
+	console.log("跑步分钟数:",running_minute);
+	if(response.sport_records.running!==undefined){
 	
+	running_minute.value=response.sport_records.running.minute;
+	running_calorie.value=response.sport_records.running.calorie;}
+	console.log("跑步分钟数:",running_minute.value);
+	if(response.sport_records.jogging!==undefined){
+	jogging_minute.value=response.sport_records.jogging.minute;
+	jogging_calorie.value=response.sport_records.jogging.calorie;}
+	if(response.sport_records.yoga!==undefined){
+	yoga_minute.value=response.sport_records.yoga.minute;
+	yoga_calorie.value=response.sport_records.yoga.calorie;}
+	if(response.sport_records.ropeSkipping!==undefined){
+	ropeSkipping_minute.value=response.sport_records.ropeSkipping.minute;
+	ropeSkipping_calorie.value=response.sport_records.ropeSkipping.calorie;}
 	// 获取一周内的日期
 	const startDate = new Date(); // 当前日期
 	const endDate = new Date(startDate);
@@ -177,7 +222,7 @@ const getSportRecord = async () => {
 	console.log(minutesArray);
 	// 将日期和分钟数存储在数组中
 	chartData.value = {
-	  categories: dateArray,
+	  categories: dateArray.reverse(),
 	  series: [
 		{
 		  name: "日运动时长(min)",
