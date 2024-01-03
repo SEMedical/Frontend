@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user',() => {
     // 获取用户信息并存储
     const getUserInfo = async({id,password}) => {
         const res = await loginAPI({id,password})
-		const token = res.token;
+		const token = res.response.token;
 		uni.setStorageSync('jwt_token', token);
 		console.log("222222",res);
         userInfo.value = res

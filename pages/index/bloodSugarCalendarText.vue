@@ -69,7 +69,7 @@
 				</uni-row>
 			</view>
 			<br>
-			<text :style= "getStyle()" class="prompt">{{ prompt.value }}</text>
+			<text :style= "getStyle()" class="prompt">{{ prompt }}</text>
 		</uni-card>
 	</view>
 </template>
@@ -87,6 +87,7 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
+			color: ref([]),  //存储血糖小贴士应该用的颜色
 	    }
 	},
 	mounted() {
@@ -112,6 +113,7 @@ export default{
 		    try {
 		        const response = await bloodSugar.realTimeBloodSugar();
 		        this.bloodsugar.value = response;
+				console.log(this.bloodsugar);
 		        // 在这里可以进行其他的初始化操作
 		    } catch (error) {
 		        console.error('获取血糖数据时出错：', error);
@@ -121,7 +123,9 @@ export default{
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
-				this.prompt.value = response;
+				this.prompt= response.tip;
+				console.log(this.prompt)
+				this.color= response.color;
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
@@ -130,25 +134,39 @@ export default{
 		//获取当日血糖数据
 		async loadDayBloodSugar(){
 		    try{
-				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
-				this.dayBloodSugar =response;
-				console.log(response);
+				const response = await todayBloodSugar.getGlycemiaData('Realtime');
+				this.dayBloodSugar.value =response;
+				response.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+				 	this.dayBloodSugar.push({ time: time, value: value }); 
+					}
+				 );
+				
+				const val=item[time];
+				console.log("Response****"+this.dayBloodSugar);
 			}	
 			catch(error){
 				console.error('获取本日血糖数据时出错：',error);
 			}
 		},
 		
-		getStyle(){
-			const value = this.bloodsugar.value;
-			if (value > 80) {
-			    return { color: 'red' };
-			} else if (value < 45) {
-			    return { color: 'orange' };
-			} else {
-			    return { color: 'green' };
-			}
+		// 修改 getStyle 方法
+		getStyle() {
+		    const color = this.color;
+		
+		    switch (color) {
+		        case 'RED':
+		            return { color: 'red' };
+		        case 'ORANGE':
+		            return { color: 'orange' };
+		        case 'GREEN':
+		            return { color: 'green' };
+		        default:
+		            return { color: 'black' }; // 默认值，可以根据需要修改
+		    }
 		},
+
 		formatTime(dateTime) {
 		    // 将字符串时间转换为 Date 对象
 		    const date = new Date(dateTime);
@@ -156,10 +174,10 @@ export default{
 		    // 获取时、分、秒
 		    const hours = date.getHours().toString().padStart(2, '0');
 		    const minutes = date.getMinutes().toString().padStart(2, '0');
-		    const seconds = date.getSeconds().toString().padStart(2, '0');
-		      
+		    //const seconds = date.getSeconds().toString().padStart(2, '0');
+		    console.log(`${hours}:${minutes}}`);
 		    // 拼接时分秒
-		    return `${hours}:${minutes}:${seconds}`;
+		    return `${hours}:${minutes}`;
 		},
 	},
 }

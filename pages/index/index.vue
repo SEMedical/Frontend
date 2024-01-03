@@ -2,11 +2,11 @@
 	<view class="container">
 		<uni-row class="demo-uni-row" :width="nvueWidth">
 			<uni-col :span="12">
-				<uni-title type="h1" title="2023年12月28日"></uni-title>
+				<uni-title type="h1" class="date" title="2023年12月28日"></uni-title>
 			</uni-col>
 			<uni-col :span="12">
 				<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
-				      <button @click="debug" class="flex-item round-button blue-button">
+				      <button @click="debug" class="flex-item login-button blue-button">
 				        登录
 				      </button>
 				    </navigator>
@@ -18,14 +18,14 @@
 			</uni-col>
 		</uni-row>
 		<image src="../../static/home1.png" class="homeimage"></image>			
-		<uni-card :is-shadow="false">
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8">
 					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
 							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view>运动历史</view>
+						<view style="margin-left: 15px;">运动历史</view>
 					</navigator>
 				</uni-col>
 				<uni-col :span="8">
@@ -33,7 +33,7 @@
 						<button class="flex-item round-button green-button">
 							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view>我要运动</view>
+						<view style="margin-left: 15px;">我要运动</view>
 					</navigator>
 				</uni-col>
 				<uni-col :span="8">
@@ -41,13 +41,13 @@
 						<button class="flex-item round-button yellow-button">
 							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view>血糖日历</view>
+						<view style="margin-left: 15px;">血糖日历</view>
 					</navigator>
 				</uni-col>
 			</uni-row>
 		</uni-card>
-		<uni-card :is-shadow="false">
-			<view :style="{ color: textColor}">当前血糖{{ blood_sugar }}mol/L，心率{{heart_rate}}，{{textContent}}！</view>
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
+			<view class="bloodSugerText" :style="{ color: textColor}">当前血糖{{ blood_sugar }}mol/L，心率{{heart_rate}}，{{textContent}}！</view>
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
@@ -141,6 +141,8 @@ const textColor = computed(() => {
 	  display: flex;
 	  justify-content: center;
 	  align-items: center;
+	  font-size: 25px;
+	  font-weight: bold;
 	}
 	.blue-button{
 		/* 添加渐变颜色 */
@@ -169,5 +171,31 @@ const textColor = computed(() => {
 	.homeimage{
 		width: 330px;
 		height:190px;
+		margin-top: 15px;
+	}
+	.date{
+		margin-left: 20px;
+		font-size: 25px;
+		margin-top: 15px;
+	}
+	.bloodSugerText{
+		font-size: 20px;
+	}
+	.login-button {
+	  /* 设置宽度和高度相等，使按钮变为圆形 */
+	  width: 70px;
+	  height: 70px;
+	  border-radius: 50%; /* 将边框半径设置为50%，使其成为圆形 */
+	
+	  /* 设置按钮样式 */
+	  color: #fff; /* 文字颜色为白色，以适应渐变背景 */
+	  border: none; /* 去除按钮边框 */
+	  cursor: pointer;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  margin-top: 15px;
+	  font-size: 20px;
+	  font-weight: bold;
 	}
 </style>

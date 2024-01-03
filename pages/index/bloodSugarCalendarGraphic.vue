@@ -32,9 +32,8 @@
 						:ontouch="true"
 					/>
 				</view>
-					
 				
-				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息</text>
+				<text class="annonationText">注：左右滑动曲线图可查看更多的血糖数据，点击曲线图上的点可查看该点的具体信息。蓝色线表示运动的开始时间，绿色线表示运动的结束时间。</text>
 				
 			</view>
 		</uni-card>
@@ -62,6 +61,7 @@ import { ref, onMounted} from 'vue';
 import bloodSugar from '@/api/bloodSugar';
 import Prompt from '@/api/bloodSugarPrompt.js';
 import todayBloodSugar from '@/api/currentDayBloodSugar.js';
+import todaySportTime from '@/api/getExerciseTime.js';
 
 export default{
 	data(){
@@ -73,7 +73,7 @@ export default{
 				padding: [15, 10, 0, 15],
 				enableScroll: true,
 				legend: {},
-				ontaouch:true,
+				enableMarkLine:true,
 				xAxis: {
 					disableGrid: true,
 					title:"时间",
@@ -86,14 +86,21 @@ export default{
 				},
 				yAxis: {
 					gridType: "dash",
-					dashLength: 2,
+					dashLength: 2,	
 				},
 				extra: {
 				    line: {
 						type: "curve",
 						width: 2,
 						activeType: "hollow"
-					}
+					},
+					markLine: {
+					    labelAlign: 'center', // 标签居中显示
+					    labelFontSize: 12,
+					    labelFontColor: '#666666',
+					    labelBgColor: '#DFE8FF',
+					    labelBgOpacity: 0.8,
+					},
 			    },
 			},			
 			
@@ -101,12 +108,14 @@ export default{
 			dayBloodSugar:[],
 			bloodsugar : ref([]), // 存储数据库获取到的实时血糖数据
 			prompt : ref([]),   //存储血糖小贴士
+			daySportTime:[], //存储当天的运动时段
+			color:ref([]),    //存储血糖贴士的颜色
 	    }
 	},
 	mounted() {
 	    this.loadData();
 		this.loadPrompt();
-		this.getChartData();
+		this.getChartAndSportData();
 	},
 	methods: {
 		//查看文本数据，跳转到文本数据页面
@@ -135,21 +144,26 @@ export default{
 		async loadPrompt() {
 			try{
 				const response = await Prompt.getBloodSugarPrompt();
-				this.prompt.value = response;
+				this.prompt.value = response.tip;
+				this.color.value = response.color;
 			}
 			catch(error){
 				console.error('获取血糖小贴士时出错：',error);
 			}
 		},
-		getStyle(){
-			const value = this.bloodsugar.value;
-			if (value > 80) {
-			    return { color: 'red' };
-			} else if (value < 45) {
-			    return { color: 'orange' };
-			} else {
-			    return { color: 'green' };
-			}
+		getStyle() {
+		    const color = this.color.value;
+		
+		    switch (color) {
+		        case 'RED':
+		            return { color: 'red' };
+		        case 'ORANGE':
+		            return { color: 'orange' };
+		        case 'GREEN':
+		            return { color: 'green' };
+		        default:
+		            return { color: 'black' }; // 默认值，可以根据需要修改
+		    }
 		},
 		
 		formatTime(dateTime) {
@@ -164,26 +178,99 @@ export default{
 		    return `${hours}:${minutes}`;
 		},
 		
-		async getChartData() {
-			try {
-				const response = await todayBloodSugar.getGlycemiaData('realtime','12');
-				this.dayBloodSugar =response;
+		/* //获取当日运动时段
+		async loadDaySportTime(){
+		    try{
+				const response = await todaySportTime.getExerciseTime('realtime','12');
+				this.daySportTime =response;
 				console.log(response);
+			}	
+			catch(error){
+				console.error('获取本日运动数据时出错：',error);
+			}
+		}, */
+		
+		async getChartAndSportData() {
+			try {
+				//获取血糖数据
+				const response1 = await todayBloodSugar.getGlycemiaData('realtime');
+				this.dayBloodSugar =response1;
+				console.log(response1);
+				response1.forEach(item=>{
+				 	const time=Object.keys(item)[0];
+				 	const value=item[time];
+					if(typeof value!=='undefined')
+						this.dayBloodSugar.push({ time: time, value: value }); 
+					}
+				 );
 			    // 直接使用存储在 dayBloodSugar 中的数据
-			    const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
-			    const valueArray = this.dayBloodSugar.map(item => item.value);
-			   
+			    const timeArray0 = this.dayBloodSugar.map(item => this.formatTime(Object.keys(item)[0]));
+			    const valueArray0 = this.dayBloodSugar.map(item => (item.time !== 'undefined' ? item.value : 0));
+				const timeArray = timeArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== ''&& (item!=='NaN:NaN');
+				});
+				const valueArray= valueArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== '';
+				});
+				console.log("Time"+timeArray)
+				console.log("Value"+valueArray)
+			   //获取运动数据
+			   // const today = new Date();
+			   // const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+			   // const response = await todaySportTime.getExerciseTime('realtime', date);
+			   // this.daySportTime =response;
+			   // console.log(response);
+			   //  // 添加运动时段标记线
+			   //  const markLines = this.daySportTime.map(item => {
+			   //      return {
+			   //          type: 'solid', // 实线
+			   //          dashLength: 4,
+			   //          data: [
+			   //              {
+			   //                  value: this.formatTime(item.start_time),
+			   //                  lineColor: '#00aaff',
+			   //                  showLabel: true,
+			   //                  labelAlign: 'right',
+			   //                  labelOffsetX: 5,
+			   //                  labelOffsetY: 0,
+			   //                  labelPadding: 6,
+			   //                  labelFontSize: 13,
+			   //                  labelFontColor: '#666666',
+			   //                  labelBgColor: '#DFE8FF',
+			   //                  labelBgOpacity: 0.8,
+			   //              },
+			   //              {
+			   //                  value: this.formatTime(item.end_time),
+			   //                  lineColor: '#55ff7f',
+			   //                  showLabel: true,
+			   //                  labelAlign: 'left',
+			   //                  labelOffsetX: 5,
+			   //                  labelOffsetY: 0,
+			   //                  labelPadding: 6,
+			   //                  labelFontSize: 13,
+			   //                  labelFontColor: '#666666',
+			   //                  labelBgColor: '#DFE8FF',
+			   //                  labelBgOpacity: 0.8,
+			   //              },
+			   //          ],
+			   //      };
+			   //  });
+
+
 			    this.chartData = {
 			        categories: timeArray,
 			        series: [
-			        {
-			            name: "血糖值",
-			            data: valueArray
-			        }
-			        ]
+			            {
+			                name: "血糖值",
+			                data: valueArray
+			            },
+			        ],
+					// markLine: {
+					//     data: markLines,
+					// },
 			    };
 			} catch (error) {
-			    console.error('获取本日血糖数据时出错：', error);
+			    console.log('获取本日数据时出错：', error);
 			}
 		},		
 		
