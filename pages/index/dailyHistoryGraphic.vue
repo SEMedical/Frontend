@@ -58,11 +58,11 @@
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<text class="statics">在{{this.loadedDate.year}}年{{this.loadedDate.month}}月{{this.loadedDate.day}}日，您的血糖值有：</text>
 			<br>
-			<text class="highText">{{this.highStatistic.value}}%时间偏高</text>
+			<text class="highText">{{this.highStatistic}}%时间偏高</text>
 			<br>
-			<text class="normalText">{{this.normalStatistic.value}}%时间正常</text>
+			<text class="normalText">{{this.normalStatistic}}%时间正常</text>
 			<br>
-			<text class="lowText">{{this.lowStatistic.value}}%时间偏低</text>
+			<text class="lowText">{{this.lowStatistic}}%时间偏低</text>
 		</uni-card>
 		
 	</view>
@@ -225,23 +225,33 @@ export default{
 				//获取血糖和统计值数据
 				const date = `${this.loadedDate.year}-${String(this.loadedDate.month).padStart(2, '0')}-${String(this.loadedDate.day).padStart(2, '0')}`;
 				const response = await DayBloodSugar.getdailyGlycemia(date);
-				this.highStatistic.value = response.highSta.toFixed(2);
-				this.normalStatistic.value = response.normalSta.toFixed(2);
-				this.lowStatistic.value =response.lowSta.toFixed(2);
+				this.highStatistic = response.highSta.toFixed(2);
+				console.log(response.highSta);
+				this.normalStatistic = response.normalSta.toFixed(2);
+				this.lowStatistic =response.lowSta.toFixed(2);
 				console.log(this.highStatistic.value);
 				console.log(this.normalStatistic.value);
 				console.log(this.lowStatistic.value);
 				this.dayBloodSugar = response.entry;
 				console.log(this.dayBloodSugar);
 				
-				//将血糖数据存储在数组中
+				/* //将血糖数据存储在数组中
 				const timeArray = this.dayBloodSugar.map(item => this.formatTime(item.time));
-				const valueArray = this.dayBloodSugar.map(item => item.value);
-				
-				//获取运动数据
-				const sportResponse = await DaySportTime.getExerciseTime('realtime',date);
-				this.daySportTime =sportResponse;
-				console.log(sportResponse);
+				const valueArray = this.dayBloodSugar.map(item => item.value); */
+				const timeArray0 = this.dayBloodSugar.map(item => this.formatTime(Object.keys(item)[0]));
+				const valueArray0 = this.dayBloodSugar.map(item => (item[Object.keys(item)[0]]));
+				const timeArray = timeArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== ''&& (item!=='NaN:NaN');
+				});
+				const valueArray= valueArray0.filter(item => {
+				  return typeof item !== 'undefined' && item !== '';
+				});
+				console.log("Time"+timeArray)
+				console.log("Value"+valueArray)
+				// //获取运动数据
+				// const sportResponse = await DaySportTime.getExerciseTime('realtime',date);
+				// this.daySportTime =sportResponse;
+				// console.log(sportResponse);
 				
 				// 添加运动时段标记线
 				const markLines = this.daySportTime.map(item => {
@@ -287,9 +297,9 @@ export default{
 					        data: valueArray
 					    },
 					],
-					markLine: {
+					/* markLine: {
 						data: markLines,
-					},
+					}, */
 				};
 				
 			} catch(error){
