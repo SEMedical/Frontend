@@ -86,6 +86,8 @@ const saveData = async () => {
       familyHistory: familyHistory.value,
     });
     console.log('数据保存成功');
+	uni.showToast({ title: '保存方案成功' });
+	setTimeout(() => { uni.navigateBack({ delta: 5 }); }, 1000);
   } catch (error) {
     console.error('保存数据时出错：', error);
   }
