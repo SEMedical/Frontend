@@ -132,4 +132,3 @@ const saveData = async () => {
   border-radius: 8px;
 }
 </style>
-</style>

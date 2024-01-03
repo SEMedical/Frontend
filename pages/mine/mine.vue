@@ -7,7 +7,6 @@
       <uni-col :span="16" style="margin-top: 10px; padding-left: 6px;">
         <view class="intro">张大强</view>
 		<view style="height: 6px;"></view> <!-- 添加的空行 -->
-        <button class="flex-item" type="primary" style="background-color: palegreen; color: #fff; border: none;box-sizing: border-box;width: 100px;">退出登录</button>
       </uni-col>
     </uni-row>
     <uni-card :is-shadow="false" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;border-radius: 20px;">
