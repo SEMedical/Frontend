@@ -30,18 +30,18 @@
 					
 				</uni-card>
 				
-				<uni-card :is-shadow="false" v-if=showRunningMinute style="border-radius: 20px;margin-top: 20px;">
+				<uni-card :is-shadow="false" v-if=showWalkingMinute style="border-radius: 20px;margin-top: 20px;">
 					<text class="thirdTitle" style="margin-left: 20px;">注：以下数据皆来自于近七天</text>
-					<view class="smallTitle">跑步</view>
+					<view class="smallTitle">散步</view>
 					<!-- <view class="thirdTitle">近7天</view> -->
 					<uni-row class="demo-uni-row" :width="nvueWidth">
 						<uni-col :span="12">
 							<view class="thirdTitle">总时长</view>
-							<view class="sportData">{{running_minute}}分钟</view>
+							<view class="sportData">{{walking_minute}}分钟</view>
 						</uni-col>
 						<uni-col :span="12">
 							<view class="thirdTitle">共消耗</view>
-							<view class="sportData">{{running_calorie}}千卡</view>
+							<view class="sportData">{{walking_calorie}}千卡</view>
 						</uni-col>
 					</uni-row>
 				</uni-card>			
@@ -108,8 +108,8 @@ const chartData = ref([]);
 const total_minute=ref([]);
 
 const total_calorie=ref([]);
-const running_minute=ref();
-const running_calorie=ref();
+const walking_minute=ref();
+const walking_calorie=ref();
 const yoga_minute=ref();
 const yoga_calorie=ref();
 const jogging_minute=ref();
@@ -117,8 +117,8 @@ const jogging_calorie=ref();
 const ropeSkipping_minute=ref();
 const ropeSkipping_calorie=ref();
 //存储图片的配置选项
-const showRunningMinute = computed(() => {
-  return running_minute.value!==null && running_minute.value!==undefined	;
+const showWalkingMinute = computed(() => {
+  return walking_minute.value!==null && walking_minute.value!==undefined	;
 });
 const showJoggingMinute = computed(() => {
   return jogging_minute.value!==null && jogging_minute.value!==undefined;
@@ -188,12 +188,10 @@ const getSportRecord = async () => {
 	minute_record.value = response.minute_record;
 	total_minute.value=response.total_minute;
 	total_calorie.value=response.total_calorie;
-	console.log("跑步分钟数:",running_minute);
-	if(response.sport_records.running!==undefined){
+	if(response.sport_records.walking!==undefined){
 	
-	running_minute.value=response.sport_records.running.minute;
-	running_calorie.value=response.sport_records.running.calorie;}
-	console.log("跑步分钟数:",running_minute.value);
+	walking_minute.value=response.sport_records.walking.minute;
+	walking_calorie.value=response.sport_records.walking.calorie;}
 	if(response.sport_records.jogging!==undefined){
 	jogging_minute.value=response.sport_records.jogging.minute;
 	jogging_calorie.value=response.sport_records.jogging.calorie;}
