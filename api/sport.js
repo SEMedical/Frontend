@@ -99,15 +99,15 @@ export default{
 			throw error;
 		});
 	},
-	realtimeSportData() {
+	realTimeSportData() {
 		// 获取存储在本地的 token
 		const token = uni.getStorageSync('jwt_token');
 		// 如果 token 存在，将其添加到请求头中
 		const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-		return request(`/api/sports/realtimeSportData`, 'GET',  {}, headers)
+		return request(`/api/sports/realTimeSportData`, 'GET',  {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response;
+			return response.response;
 		})
 		.catch(error => {
 			throw error;
@@ -121,13 +121,13 @@ export default{
 		return request(`/api/sports/realTimeHeartRate`, 'GET', {}, headers)
 			.then(response => {
 			console.log('后端响应:', response);
-			return response.heart_rate;
+			return response.response;
 		})
 		.catch(error => {
 			throw error;
 		});
 	},
-	sportRecord() {
+	getSportRecord() {
 		// 获取存储在本地的 token
 		//const token = uni.getStorageSync('jwt_token');
 		// 如果 token 存在，将其添加到请求头中

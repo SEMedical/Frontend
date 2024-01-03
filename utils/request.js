@@ -8,13 +8,6 @@ let BASEURL = url_all['DEV']; // 调整当前环境
 export default (path, method, data = {}, loading = true) => {
   const token = uni.getStorageSync("jwt_token"); // 获取存储的 token
 
-  if (loading) {
-    uni.showLoading({
-      title: "加载中",
-      mask: true
-    });
-  }
-
   return new Promise((resolve, reject) => {
     uni.request({
       url: BASEURL + path,
@@ -44,6 +37,7 @@ export default (path, method, data = {}, loading = true) => {
     });
   });
 };
+
 
 // const url_all = {
 // 	'DEV': 'https://mock.apifox.com/m1/3732944-0-default', // 开发

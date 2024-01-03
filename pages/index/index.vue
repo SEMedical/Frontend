@@ -2,52 +2,56 @@
 	<view class="container">
 		<uni-row class="demo-uni-row" :width="nvueWidth">
 			<uni-col :span="12">
-				<uni-title type="h1" class="date" title="2023年12月28日"></uni-title>
+				<uni-title type="h1" style="margin-left: 15px;" title="2023年12月28日"></uni-title>
 			</uni-col>
-			<uni-col :span="12">
+			<uni-col :span="6">
+				<view>&nbsp;</view>
+			</uni-col>
+			<uni-col :span="6">
 				<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
-				      <button @click="debug" class="flex-item login-button blue-button">
-				        登录
-				      </button>
-				    </navigator>
-				
+					<button class="flex-item round-button blue-button square-button">
+					登录
+					</button>
+				</navigator>
 				    <!-- 当用户登录后显示用户 ID -->
-				    <div v-else>
-				      {{ userInfo }}
-				    </div>
+				<navigator v-else url="/pages/login/login" hover-class="navigator-hover">
+					<button click = "logout" class="flex-item round-button blue-button square-button">
+					退出
+					</button>
+				</navigator>
 			</uni-col>
 		</uni-row>
 		<image src="../../static/home1.png" class="homeimage"></image>			
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
-				<uni-col :span="8">
+				<uni-col :span="8" style="text-align: center;">
 					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
 							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="margin-left: 15px;">运动历史</view>
+						<view style="font-weight: bold;">运动历史</view>
 					</navigator>
 				</uni-col>
-				<uni-col :span="8">
+				<uni-col :span="8" style="text-align: center;">
 					<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 						<button class="flex-item round-button green-button">
 							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="margin-left: 15px;">我要运动</view>
+						<view style="font-weight: bold;">我要运动</view>
 					</navigator>
 				</uni-col>
-				<uni-col :span="8">
+				<uni-col :span="8" style="text-align: center;">
 					<navigator url="/pages/index/bloodSugarCalendarGraphic" hover-class="navigator-hover">
 						<button class="flex-item round-button yellow-button">
 							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="margin-left: 15px;">血糖日历</view>
+						<view style="font-weight: bold;">血糖日历</view>
 					</navigator>
 				</uni-col>
 			</uni-row>
 		</uni-card>
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
-			<view class="bloodSugerText" :style="{ color: textColor}">当前血糖{{ blood_sugar }}mol/L，心率{{heart_rate}}，{{textContent}}！</view>
+			<view :style="{ color: textColor}" class = "advice">&nbsp;&nbsp;当前血糖{{ blood_sugar }}mol/L,心率{{heart_rate}}次/分钟<br>&nbsp;&nbsp;{{textContent}}！</view>
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
@@ -56,10 +60,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 //import { useUserStore } from '@/store/user';
-import bloodSugar from '@/api/bloodSugar';
-import heartRate from '@/api/sport';
+import bloodSugarAPI from '@/api/bloodSugar';
+import sportAPI from '@/api/sport';
 import { useUserStore } from '@/store/user';
 const userStore = useUserStore();
+console.log('当前 userInfo 值:', userStore);
 const isUserLoggedIn = computed(() => {
   // 检查 userInfo 对象是否有键，即是否不为空
   return Object.keys(userStore.userInfo).length > 0;
@@ -68,14 +73,10 @@ const isUserLoggedIn = computed(() => {
 const userInfo = computed(() => userStore.userInfo);
 const blood_sugar = ref([])
 const heart_rate = ref([])
-function debug() {
-  console.log('当前 userStore 状态:', userStore);
-  console.log('当前 userInfo:', userStore.userInfo);
-  console.log('是否登录:', isUserLoggedIn.value);
-}
+
 const getRealTimeBloodSugar = async () => {
   try {
-    const response = await bloodSugar.realTimeBloodSugar();
+    const response = await bloodSugarAPI.realTimeBloodSugar();
 	blood_sugar.value = response;
   } catch (error) {
     console.error('获取血糖数据时出错：', error);
@@ -84,10 +85,24 @@ const getRealTimeBloodSugar = async () => {
 
 const getRealTimeHeartRate = async () => {
   try {
-    const response = await heartRate.realTimeHeartRate();
+    const response = await sportAPI.realTimeHeartRate();
 	heart_rate.value = response;
   } catch (error) {
     console.error('获取心率数据时出错：', error);
+  }
+};
+
+// 每5秒请求一次血糖数据
+const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
+
+// 每5秒请求一次心率数据
+const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
+
+const logout = async () => {
+  try {
+	userStore.clearUserInfo();
+  } catch (error) {
+    console.error('退出登录时出错：', error);
   }
 };
 
@@ -141,8 +156,6 @@ const textColor = computed(() => {
 	  display: flex;
 	  justify-content: center;
 	  align-items: center;
-	  font-size: 25px;
-	  font-weight: bold;
 	}
 	.blue-button{
 		/* 添加渐变颜色 */
@@ -171,31 +184,25 @@ const textColor = computed(() => {
 	.homeimage{
 		width: 330px;
 		height:190px;
-		margin-top: 15px;
 	}
-	.date{
-		margin-left: 20px;
-		font-size: 25px;
-		margin-top: 15px;
+	.square-button {
+		width: 70px;
+		height: 50px;
+		border-radius: 15px;
+		margin-top: 10px; /* 调整上方空白的大小 */
 	}
-	.bloodSugerText{
-		font-size: 20px;
-	}
-	.login-button {
-	  /* 设置宽度和高度相等，使按钮变为圆形 */
-	  width: 70px;
-	  height: 70px;
-	  border-radius: 50%; /* 将边框半径设置为50%，使其成为圆形 */
 	
-	  /* 设置按钮样式 */
-	  color: #fff; /* 文字颜色为白色，以适应渐变背景 */
-	  border: none; /* 去除按钮边框 */
-	  cursor: pointer;
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  margin-top: 15px;
-	  font-size: 20px;
-	  font-weight: bold;
+	.advice {
+	    font-size: 20px;
+	    font-weight: bold;
+	    /* 添加左右边缘 */
+	    padding-left: 30px;
+	    padding-right: 30px;
+	    /* 居中文本 */
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    height: 100%;
+		line-height: 30px;
 	}
 </style>
