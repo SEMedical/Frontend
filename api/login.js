@@ -14,7 +14,7 @@ import {useUserStore} from '@/store/user.js'
 // }
 export const loginAPI = async ({ id, password }) => {
   try {
-    const response = await request('/login', 'POST', { contact: id, password:password });
+    const response = await request('/api/login', 'POST', { contact: id, password:password });
 
     console.log('验证成功:', response, 'id', id, '密码', password);
 

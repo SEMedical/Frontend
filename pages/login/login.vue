@@ -63,7 +63,7 @@ const userStore = useUserStore();
 	        uni.showToast({ title: '登录成功' });
 			
 			setTimeout(() => {
-			  uni.navigateBack({ delta: 1 });
+			  uni.switchTab({ url: '/pages/index/index' });
 			}, 1000);
 	        // 可以在这里进行页面跳转或其他逻辑
 	      } else {
