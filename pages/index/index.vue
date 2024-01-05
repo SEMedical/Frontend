@@ -193,11 +193,11 @@ const textColor = computed(() => {
 	}
 	
 	.advice {
-	    font-size: 20px;
+	    font-size: 18px;
 	    font-weight: bold;
 	    /* 添加左右边缘 */
-	    padding-left: 30px;
-	    padding-right: 30px;
+	   /* padding-left: 30px;
+	    padding-right: 30px; */
 	    /* 居中文本 */
 	    display: flex;
 	    align-items: center;

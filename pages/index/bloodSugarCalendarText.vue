@@ -134,6 +134,11 @@ export default{
 		//获取当日血糖数据
 		async loadDayBloodSugar(){
 		    try{
+				uni.showToast({
+				  title: '加载较慢，请耐心等待...',
+				  icon: 'none', // 这个是为了去掉默认的图标，节省空间
+				  duration: 2000 // 调整显示时间，让用户有足够时间看到提示
+				});
 				const response = await todayBloodSugar.getGlycemiaData('Realtime');
 				this.dayBloodSugar.value =response;
 				response.forEach(item=>{

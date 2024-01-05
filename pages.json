@@ -83,6 +83,7 @@
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},
+
 	{
 		"path": "pages/index/bloodSugarCalendarGraphic",
 		"style": {
@@ -90,6 +91,14 @@
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},
+	{
+			"path" : "pages/mine/getmes",
+			"style" : 
+			{
+				"navigationBarTitleText" : "获得",
+				"enablePullDownRefresh" : false
+			}
+		},
 	{
 		"path": "pages/index/bloodSugarCalendarText",
 		"style": {

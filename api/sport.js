@@ -44,47 +44,56 @@ export default{
 		});
 	},
 	questionnaire1() {
-		// 获取存储在本地的 token
-		const token = uni.getStorageSync('jwt_token');
-		// 如果 token 存在，将其添加到请求头中
-		const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-		return request(`/api/sports/questionnaire1`, 'GET',  {}, headers)
-			.then(response => {
-			console.log('后端响应:', response);
-			return response;
-		})
-		.catch(error => {
-			throw error;
-		});
-	},
-	questionnaire2() {
-		// 获取存储在本地的 token
-		const token = uni.getStorageSync('jwt_token');
-		// 如果 token 存在，将其添加到请求头中
-		const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-		return request(`/api/sports/questionnaire2`, 'POST',  {}, headers)
-			.then(response => {
-			console.log('后端响应:', response);
-			return response;
-		})
-		.catch(error => {
-			throw error;
-		});
-	},
-	recommendedSportPlan() {
-		// 获取存储在本地的 token
-		const token = uni.getStorageSync('jwt_token');
-		// 如果 token 存在，将其添加到请求头中
-		const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
-		return request(`/api/sports/recommendedSportPlan`, 'POST',  {}, headers)
-			.then(response => {
-			console.log('后端响应:', response);
-			return response;
-		})
-		.catch(error => {
-			throw error;
-		});
-	},
+			// 获取存储在本地的 token
+			const token = uni.getStorageSync('jwt_token');
+			// 如果 token 存在，将其添加到请求头中
+			const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+			return request(`/api/sports/questionnaire/1`, 'GET',  {}, headers)
+				.then(response => {
+				console.log('后端响应:', response);
+				return response;
+			})
+			.catch(error => {
+				throw error;
+			});
+		},
+		questionnaire2(userResponses) {
+		  // 获取存储在本地的 token
+		  const token = uni.getStorageSync('jwt_token');
+		  // 如果 token 存在，将其添加到请求头中
+		  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+		
+		  const Answer1DTO = {
+		    result: userResponses,
+		  };
+		
+		  return request(`/api/sports/questionnaire/2`, 'POST', Answer1DTO, headers)
+		    .then(response => {
+		      console.log('后端响应:', response);
+		      return response;
+		    })
+		    .catch(error => {
+		      throw error;
+		    });
+		},
+	recommendedSportPlan(userResponses) {
+			// 获取存储在本地的 token
+			const token = uni.getStorageSync('jwt_token');
+			// 如果 token 存在，将其添加到请求头中
+			const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+			
+			const Answer2DTO = {
+			  result: userResponses,
+			};
+			return request(`/api/sports/questionnaire/recommended-sport-plan`, 'POST',  Answer2DTO, headers)
+				.then(response => {
+				console.log('后端响应:', response);
+				return response;
+			})
+			.catch(error => {
+				throw error;
+			});
+		},
 	chooseSportPlan() {
 		// 获取存储在本地的 token
 		const token = uni.getStorageSync('jwt_token');
