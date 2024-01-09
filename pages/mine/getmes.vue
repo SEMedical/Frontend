@@ -1,13 +1,5 @@
 <template>
   <view class="container">
-    <uni-row class="avatar-row" :width="nvueWidth">
-      <uni-col :span="10">
-        <image src="../../static/ex_avatar.png" mode="aspectFill" class="avatar"></image>
-      </uni-col>
-      <uni-col :span="14">
-        <view class="intro2">张大强</view>
-      </uni-col>
-    </uni-row>
     <uni-card :is-shadow="false" class="info-card">
       <uni-row :width="nvueWidth">
        <uni-col :span="18">
@@ -37,7 +29,9 @@
          <input id="familyHistory" v-model="familyHistory" placeholder="请输入家族病史" class="input-field" />
 
          <!-- Save button -->
-         <button @click="saveData" class="save-button">保存</button>
+		 <button type="primary" class="common-button" @click="saveData">
+		 保存
+		 </button>
        </uni-col>
 
       </uni-row>
@@ -115,15 +109,6 @@ const saveData = async () => {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-.save-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #4ac2be;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 .intro2 {
   font-size: 40px;
   font-weight: bold;
@@ -132,5 +117,10 @@ const saveData = async () => {
 .info-card {
   border: 1px solid #ddd;
   border-radius: 8px;
+}
+.common-button{
+
+	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+	
 }
 </style>

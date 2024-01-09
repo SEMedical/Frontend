@@ -1,29 +1,32 @@
 <template>
   <view class="container">
     <uni-row class="demo-uni-row" :width="nvueWidth">
-      <uni-col :span="10">
-        <image src="../../static/ex_avatar.png" mode="aspectFill" style="width: 180px; height: 180px;"></image>
+      <uni-col :span="8" style="margin-bottom: 10px; padding-left: 8px;">
+        <image src="../../static/ex_avatar.png" mode="aspectFill" style="width: 120px; height: 120px; border-radius: 50%;"></image>
       </uni-col>
-      <uni-col :span="14">
-        <view class="intro2">张大强</view>
+      <uni-col :span="16" style="margin-top: 10px; padding-left: 6px;">
+        <view class="intro">张大强</view>
+		<view style="height: 6px;"></view> <!-- 添加的空行 -->
       </uni-col>
     </uni-row>
-    <uni-card :is-shadow="false">
+    <uni-card :is-shadow="true" style="border-radius: 20px;">
       <uni-row class="demo-uni-row" :width="nvueWidth">
         <uni-col :span="18">
-          <view class="intro">性别：{{ gender }}</view>
-          <view class="intro">年龄：{{ age }}</view>
-          <view class="intro">身高：{{ height }}</view>
-          <view class="intro">体重：{{ weight }}</view>
-          <view class="intro">糖尿病类型：{{ diabetesType }}</view>
-          <view class="intro">并发症：{{ complications }}</view>
-          <view class="intro">确诊年份：{{ diagnosisYear }}</view>
-          <view class="intro">家族病史：{{ familyHistory }}</view>
+          <view>性别：{{ gender }}</view>
+          <view>年龄：{{ age }}</view>
+          <view>身高：{{ height }}</view>
+          <view>体重：{{ weight }}</view>
+          <view>糖尿病类型：{{ diabetesType }}</view>
+          <view>并发症：{{ complications }}</view>
+          <view>确诊年份：{{ diagnosisYear }}</view>
+          <view>家族病史：{{ familyHistory }}</view>
         </uni-col>
       </uni-row>
     </uni-card>
 	<navigator url='/pages/mine/getmes' hover-class="navigator-hover">
-	  <view class="intro">修改</view>
+	  <button type="primary" class="common-button">
+	  修改
+	  </button>
 	</navigator>
   </view>
 </template>
@@ -61,6 +64,7 @@ onMounted(async () => {
     console.error('获取数据时出错：', error);
   }
 });
+
 </script>
 
 <style>
@@ -80,5 +84,11 @@ onMounted(async () => {
   font-size: 40px;
   font-weight: bold;
   margin-top: 50px;
+}
+
+.common-button{
+
+	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+	
 }
 </style>

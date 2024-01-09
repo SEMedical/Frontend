@@ -1,33 +1,18 @@
 <template>
 	<view class="container">
-		<uni-row class="demo-uni-row" :width="nvueWidth">
-			<uni-col :span="18">
-				<br>
-				<view class="intro">&nbsp;&nbsp;&nbsp;{{ formattedDate }}</view>
-			</uni-col>
-			<uni-col :span="6">
-				<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
-					<button class="flex-item round-button blue-button square-button">
-					登录
-					</button>
-				</navigator>
-				    <!-- 当用户登录后显示用户 ID -->
-				<navigator v-else url="/pages/login/login" hover-class="navigator-hover">
-					<button click = "logout" class="flex-item round-button blue-button square-button">
-					退出
-					</button>
-				</navigator>
-			</uni-col>
-		</uni-row>
-		<image src="../../static/home1.png" class="homeimage"></image>			
-		<uni-card :is-shadow="false" style="border-radius: 20px;">
+		<br>
+		<view style="font-size: 20px;">&nbsp;&nbsp;&nbsp;{{ formattedDate }}&nbsp;&nbsp;&nbsp;Hello, 用户名</view>
+		<uni-card :is-shadow="true" style="border-radius: 20px;">
+		<image src="../../static/home1.png" class="homeimage"></image>	
+		</uni-card>
+		<uni-card :is-shadow="true" style="border-radius: 20px;">
 			<uni-row class="demo-uni-row" :width="nvueWidth">
 				<uni-col :span="8" style="text-align: center;">
 					<navigator url="/pages/index/sportHistory" hover-class="navigator-hover">
 						<button class="flex-item round-button blue-button">
 							<image src="../../static/icon/history.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="font-weight: bold;">运动历史</view>
+						<view>运动历史</view>
 					</navigator>
 				</uni-col>
 				<uni-col :span="8" style="text-align: center;">
@@ -35,7 +20,7 @@
 						<button class="flex-item round-button green-button">
 							<image src="../../static/icon/sport.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="font-weight: bold;">我要运动</view>
+						<view>我要运动</view>
 					</navigator>
 				</uni-col>
 				<uni-col :span="8" style="text-align: center;">
@@ -43,13 +28,14 @@
 						<button class="flex-item round-button yellow-button">
 							<image src="../../static/icon/calendar.png" class="image-in-button" mode="aspectFill" style="width:50px; height: 50px;"></image>
 						</button>
-						<view style="font-weight: bold;">血糖日历</view>
+						<view>血糖日历</view>
 					</navigator>
 				</uni-col>
 			</uni-row>
 		</uni-card>
-		<uni-card :is-shadow="false" style="border-radius: 20px;">
-			<view :style="{ color: textColor}" class = "advice">当前血糖{{ blood_sugar }}mol/L,心率{{heart_rate}}次/分钟<br>{{textContent}}！</view>
+		<uni-card :is-shadow="true" :style="{ borderRadius: '20px', backgroundColor: cardColor }">
+			<view>当前血糖<span style="font-size: 40px">{{ blood_sugar }}</span>mol/L,心率<span style="font-size: 40px">{{heart_rate}}</span>次/分钟
+			<br>{{textContent}}</view>
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
@@ -96,14 +82,6 @@ const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
 // 每5秒请求一次心率数据
 const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
 
-const logout = async () => {
-  try {
-	userStore.clearUserInfo();
-  } catch (error) {
-    console.error('退出登录时出错：', error);
-  }
-};
-
 // 使用 ref 创建响应式变量
 const currentDate = ref(new Date());
 const formattedDate = ref("");
@@ -135,11 +113,11 @@ const textContent = computed(() => {
 	}
 });
 
-const textColor = computed(() => {
+const cardColor = computed(() => {
   if (blood_sugar.value < 3.9 || blood_sugar.value > 10) {
-    return "red";
+    return "#fed7c9";
   } else {
-    return "green";
+    return "#ffffff";
   }
 });
 
@@ -170,17 +148,20 @@ const textColor = computed(() => {
 	  justify-content: center;
 	  align-items: center;
 	}
-	.blue-button{
-		/* 添加渐变颜色 */
-		background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+
+	.blue-button {
+	  background: #82eefa; /* 使用单一颜色，去掉渐变 */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影，可以根据需要调整阴影参数 */
 	}
-	.green-button{
-		/* 添加渐变颜色 */
-		background: linear-gradient(to right, #6afa80, #5bcb8e); /* 使用线性渐变，可以根据需要调整颜色值 */
+
+	.green-button {
+	  background: #21e3a9; /* 使用单一颜色，去掉渐变 */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影，可以根据需要调整阴影参数 */
 	}
-	.yellow-button{
-		/* 添加渐变颜色 */
-		background: linear-gradient(to right, #fae018, #d5d524); /* 使用线性渐变，可以根据需要调整颜色值 */
+
+	.yellow-button {
+	  background: #e3e316; /* 使用单一颜色，去掉渐变 */
+	  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 添加阴影，可以根据需要调整阴影参数 */
 	}
 	/* 图片样式 */
 	.image-in-button {
@@ -204,14 +185,5 @@ const textColor = computed(() => {
 		border-radius: 15px;
 		margin-top: 10px; /* 调整上方空白的大小 */
 	}
-	
-	.advice {
-	    font-size: 18px;
-	    font-weight: bold;
-		padding-left: 30px;
-	    padding-right: 30px;
-	    align-items: center;
-	    height: 100%;
-		line-height: 30px;
-	}
+
 </style>

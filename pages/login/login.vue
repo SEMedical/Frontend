@@ -87,7 +87,7 @@ const userStore = useUserStore();
 }
 .button-group button{
 
-		background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
 	
 }
 .iconimage{

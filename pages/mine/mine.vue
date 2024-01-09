@@ -9,9 +9,21 @@
 		<view style="height: 6px;"></view> <!-- 添加的空行 -->
       </uni-col>
     </uni-row>
+	<!-- 当用户登录后显示用户 ID -->
+	<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
+		<button type="primary" class="common-button">
+		登录
+		</button>
+	</navigator>
+		<!-- 当用户登录后显示用户 ID -->
+	<navigator v-else url="/pages/login/login" hover-class="navigator-hover">
+		<button click = "logout" type="primary" class="common-button">
+		退出
+		</button>
+	</navigator>
     <uni-card :is-shadow="false" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;border-radius: 20px;">
       <uni-row class="demo-uni-row" :width="nvueWidth">
-        <uni-col :span="12" style="margin-bottom: 250px;">
+        <uni-col :span="12" style="text-align: center;">
           <navigator url="/pages/mine/health" hover-class="navigator-hover">
             <image src="../../static/icon/health.png" mode="aspectFill" style="width: 80px; height: 80px;margin-left: 20px;margin-top: 10px;"></image>
             <view class="healthFile">健康档案</view>
@@ -22,15 +34,15 @@
   </view>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      nvueWidth: 100 // You can adjust this width value as needed
-    };
-  },
-  methods: {}
-};
+<script setup>
+	import { ref, computed, onMounted } from 'vue';
+	import { useUserStore } from '@/store/user';
+	const userStore = useUserStore();
+	console.log('当前 userInfo 值:', userStore);
+	const isUserLoggedIn = computed(() => {
+	  // 检查 userInfo 对象是否有键，即是否不为空
+	  return Object.keys(userStore.userInfo).length > 0;
+	});
 </script>
 <style>
 .container {
@@ -50,5 +62,10 @@ export default {
 	margin-top: 10px; 
 	color: black;
 	margin-left: 20px;
+}
+.common-button{
+
+	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
+	
 }
 </style>

@@ -6,7 +6,7 @@
 		<view class="empty-body">
 			<uni-row class="demo-uni-row">
 				<uni-col :span="14">
-				    <text class="title">我的血糖数据</text>
+				    <view class="intro">&nbsp;&nbsp;我的血糖数据</view>
 			    </uni-col>
 			    <uni-col :span="10">
 					<button class="switchButton" @tap="switchToText()">文本</button>
@@ -319,12 +319,10 @@ export default{
 	font-size: 14px;
 	line-height: 24px;
 }
-.title{
-	/*小标题字样式*/
-	margin-left:10px;
-	font-weight:bold;
-	font-size: 25px;
-}	
+.intro {
+	font-size: 30px; /* 替换 18px 为你想要的字体大小 */
+	font-weight: bold; /* 使用 bold 来将字体加粗 */
+}
 .switchButton{
 	background-color:green;
 	color:white;
