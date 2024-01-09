@@ -1,11 +1,9 @@
 <template>
 	<view class="container">
 		<uni-row class="demo-uni-row" :width="nvueWidth">
-			<uni-col :span="12">
-				<uni-title type="h1" style="margin-left: 15px;" title="2023年12月28日"></uni-title>
-			</uni-col>
-			<uni-col :span="6">
-				<view>&nbsp;</view>
+			<uni-col :span="18">
+				<br>
+				<view class="intro">&nbsp;&nbsp;&nbsp;{{ formattedDate }}</view>
 			</uni-col>
 			<uni-col :span="6">
 				<navigator v-if="!isUserLoggedIn" url="/pages/login/login" hover-class="navigator-hover">
@@ -51,7 +49,7 @@
 			</uni-row>
 		</uni-card>
 		<uni-card :is-shadow="false" style="border-radius: 20px;">
-			<view :style="{ color: textColor}" class = "advice">&nbsp;&nbsp;当前血糖{{ blood_sugar }}mol/L,心率{{heart_rate}}次/分钟<br>&nbsp;&nbsp;{{textContent}}！</view>
+			<view :style="{ color: textColor}" class = "advice">当前血糖{{ blood_sugar }}mol/L,心率{{heart_rate}}次/分钟<br>{{textContent}}！</view>
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
@@ -106,9 +104,23 @@ const logout = async () => {
   }
 };
 
+// 使用 ref 创建响应式变量
+const currentDate = ref(new Date());
+const formattedDate = ref("");
+
+// 定义格式化日期的函数
+const formatCurrentDate = () => {
+  const year = currentDate.value.getFullYear();
+  const month = currentDate.value.getMonth() + 1;
+  const day = currentDate.value.getDate();
+
+  formattedDate.value = `${year}年${month}月${day}日`;
+};
+
 onMounted(() => {
   getRealTimeBloodSugar();
   getRealTimeHeartRate();
+  formatCurrentDate();
 });
 
 const textContent = computed(() => {
@@ -130,6 +142,7 @@ const textColor = computed(() => {
     return "green";
   }
 });
+
 
 </script>
 
@@ -195,13 +208,9 @@ const textColor = computed(() => {
 	.advice {
 	    font-size: 18px;
 	    font-weight: bold;
-	    /* 添加左右边缘 */
-	   /* padding-left: 30px;
-	    padding-right: 30px; */
-	    /* 居中文本 */
-	    display: flex;
+		padding-left: 30px;
+	    padding-right: 30px;
 	    align-items: center;
-	    justify-content: center;
 	    height: 100%;
 		line-height: 30px;
 	}
