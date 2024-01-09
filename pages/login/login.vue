@@ -1,6 +1,7 @@
 <template>
-	<view>
-		<uni-section title="登录" type="line" >
+	<view>	
+		<uni-section title="" type="line" >
+			<image src="../../static/sugarsmart.png" class="iconimage"></image>
 					<view class="example">
 						<uni-forms  ref="valiForm" :rules="rules" :modelValue="valiFormData">
 							<uni-forms-item label="账号" required name="id">
@@ -88,6 +89,10 @@ const userStore = useUserStore();
 
 		background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
 	
+}
+.iconimage{
+	width: 263px;
+	height:123px;
 }
 
 </style>
