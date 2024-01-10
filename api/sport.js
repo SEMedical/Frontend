@@ -151,7 +151,7 @@ export default{
 			throw error;
 		});
 	},
-	/* selectSportScheme(userResponses) {
+	selectSportScheme(userResponses) {
 	  // 获取存储在本地的 token
 	  const token = uni.getStorageSync('jwt_token');
 	  // 如果 token 存在，将其添加到请求头中
@@ -169,7 +169,7 @@ export default{
 	    .catch(error => {
 	      throw error;
 	    });
-	}, */
+	},
 	detailedSportRecord() {
 		// 获取存储在本地的 token
 		const token = uni.getStorageSync('jwt_token');

@@ -1,8 +1,7 @@
 <template>
 	<view class="container">
 		<br>
-		<view style="font-size: 20px;">&nbsp;&nbsp;&nbsp;{{ formattedDate }}&nbsp;&nbsp;&nbsp;Hello</view>
-		<view>{{ user_name }}</view>
+		<view style="font-size: 20px;">&nbsp;&nbsp;&nbsp;{{ formattedDate }}&nbsp;&nbsp;&nbsp;Hello&nbsp;{{user_name}}</view>
 		<uni-card :is-shadow="true" style="border-radius: 20px;">
 		<image src="../../static/home1.png" class="homeimage"></image>	
 		</uni-card>
@@ -115,11 +114,11 @@ const getUserName = async () => {
     console.error('获取用户名数据时出错：', error);
   }
 };
-// // 每5秒请求一次血糖数据
-// const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
+// 每5秒请求一次血糖数据
+const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
 
-// // 每5秒请求一次心率数据
-// const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
+// 每5秒请求一次心率数据
+const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
 
 // 使用 ref 创建响应式变量
 const currentDate = ref(new Date());
