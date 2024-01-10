@@ -33,9 +33,14 @@
 				</uni-col>
 			</uni-row>
 		</uni-card>
+<!-- <<<<<<< Updated upstream -->
 		<uni-card :is-shadow="true" :style="{ borderRadius: '20px', backgroundColor: cardColor }">
 			<view>当前血糖<span style="font-size: 40px">{{ blood_sugar }}</span>mol/L,心率<span style="font-size: 40px">{{heart_rate}}</span>次/分钟
 			<br>{{textContent}}</view>
+<!-- =======
+		<uni-card :is-shadow="false" style="border-radius: 20px;">
+			<view :style="{ color: textColor}" class = "advice">&nbsp;&nbsp;当前血糖{{ blood_sugar }}mmol/L,心率{{heart_rate}}次/分钟<br>&nbsp;&nbsp;{{textContent}}！</view>
+>>>>>>> Stashed changes -->
 		</uni-card>
 		<!--<uni-link :href="href" :text="href"></uni-link>-->
 	</view>
