@@ -5,7 +5,7 @@
         <image src="../../static/ex_avatar.png" mode="aspectFill" style="width: 120px; height: 120px; border-radius: 50%;"></image>
       </uni-col>
       <uni-col :span="16" style="margin-top: 10px; padding-left: 6px;">
-        <view class="intro">张大强</view>
+        <view class="intro">用户名</view>
 		<view style="height: 6px;"></view> <!-- 添加的空行 -->
       </uni-col>
     </uni-row>
@@ -69,7 +69,7 @@ onMounted(async () => {
 
 <style>
 .container {
-  padding: 20px;
+  padding: 0px;
   font-size: 14px;
   line-height: 24px;
 }
@@ -87,8 +87,7 @@ onMounted(async () => {
 }
 
 .common-button{
-
+	border-radius: 20px; /* 调整圆角半径的值以达到你想要的效果 */
 	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
-	
 }
 </style>

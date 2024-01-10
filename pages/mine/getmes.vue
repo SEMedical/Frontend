@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <uni-card :is-shadow="false" class="info-card">
+    <uni-card :is-shadow="true" style="border-radius: 20px;">
       <uni-row :width="nvueWidth">
        <uni-col :span="18">
          <!-- Input fields for modifying data -->
@@ -90,7 +90,7 @@ const saveData = async () => {
 
 <style>
 .container {
-  padding: 20px;
+  padding: 0px;
   font-size: 14px;
   line-height: 24px;
 }
@@ -114,13 +114,9 @@ const saveData = async () => {
   font-weight: bold;
   margin-top: 20px;
 }
-.info-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-.common-button{
 
+.common-button{
+	border-radius: 20px; /* 调整圆角半径的值以达到你想要的效果 */
 	background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
-	
 }
 </style>

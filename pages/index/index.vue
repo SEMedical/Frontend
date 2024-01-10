@@ -62,6 +62,13 @@ const getRealTimeBloodSugar = async () => {
   try {
     const response = await bloodSugarAPI.realTimeBloodSugar();
 	blood_sugar.value = response;
+	if (response > 13.3){
+		uni.showToast({ title: '您当前血糖过高，请立即休息！' });
+	}
+		
+	else if(response < 2.8){
+		uni.showToast({ title: '您当前血糖过低，请立即休息！' });
+	}
   } catch (error) {
     console.error('获取血糖数据时出错：', error);
   }
@@ -71,6 +78,9 @@ const getRealTimeHeartRate = async () => {
   try {
     const response = await sportAPI.realTimeHeartRate();
 	heart_rate.value = response;
+	if (response > 180){
+		uni.showToast({ title: '您当前心率过高，请立即休息！' });
+	}
   } catch (error) {
     console.error('获取心率数据时出错：', error);
   }

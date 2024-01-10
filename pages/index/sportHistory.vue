@@ -270,7 +270,7 @@ onMounted(() => {
 
 <style>
 	.container {
-		padding: 20px;
+		padding: 0px;
 		font-size: 14px;
 		line-height: 24px;
 	}

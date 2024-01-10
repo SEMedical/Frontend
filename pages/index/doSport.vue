@@ -86,7 +86,7 @@
 
 <style scoped>
 	.container {
-		padding: 20px;
+		padding: 0px;
 		font-size: 14px;
 		line-height: 24px;
 	}
@@ -98,6 +98,7 @@
 		margin-left: 10px;
 	}
 	.common-button{
+		border-radius: 20px; /* 调整圆角半径的值以达到你想要的效果 */
 		background: linear-gradient(to right, #79faeb, #4ac2be); /* 使用线性渐变，可以根据需要调整颜色值 */
 	}
 

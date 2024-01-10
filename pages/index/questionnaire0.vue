@@ -2,10 +2,8 @@
 	<br>
 	<br>
 	<uni-card :is-shadow="false" style="border-radius: 20px;">
-		<view class="Title">第1步（共3步）</view>
-		<br>
-			<view class="smallTitle">请再三确认您近期没有如下症状：</view>
-			<view class="text">1. 急性感染<br>
+		<view class="smallTitle">请再三确认您近期没有如下症状：</view>
+		<view class="text">1. 急性感染<br>
 		2. 心功能不全<br>
 		3. 心律失常<br>
 		4. 严重糖尿病肾病<br>

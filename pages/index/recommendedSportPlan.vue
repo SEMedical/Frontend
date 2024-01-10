@@ -4,12 +4,12 @@
     <div class="center-container">
       <div class="content-box">
         <h2 class="title">推荐运动方案</h2>
-        <div class="card-container" v-for="item in scenario">
-          <uni-card  :key="index" :body-style="{ padding: '20px' }" style="width: 300px">
-            <p class="category">类别：{{ item.category }}</p>
-            <p class="duration">时长：{{ item.duration }}分钟</p>
-          </uni-card>
-        </div>
+		<div class="card-container" v-for="(item, index) in scenario" :key="item.id">
+		  <uni-card :style="{ padding: '20px', backgroundColor: index === selectedCardIndex ? 'lightblue' : 'white' }" @click="rememberType(index)">
+			<p class="category">类别：{{ item.category }}</p>
+			<p class="duration">时长：{{ item.duration }}分钟</p>
+		  </uni-card>
+		</div>
 		<button @click="Save">确认</button>
 		<button @click="Back">返回主页</button>
       </div>
@@ -21,7 +21,23 @@
 import { ref, onMounted } from 'vue';
 
 const scenario = ref([]);
+const selectedCardIndex = ref(null);
+
+const rememberType = (index) => {
+  selectedCardIndex.value = index;
+};
+
+const chooseSportPlan = async () => {
+  try {
+	const response = await sportAPI.chooseSportPlan(scenario[selectedCardIndex.value].category, scenario[selectedCardIndex.value].duration);
+    console.log('后端响应:', response);
+  } catch (error) {
+    console.error('选择运动方案时出错：', error);
+  }
+};
+
 const Save=()=>{
+	chooseSportPlan()
 	uni.showToast({ title: '保存方案成功' });
 	setTimeout(() => { uni.navigateBack({ delta: 5 }); }, 1000);
 }
@@ -35,7 +51,7 @@ const getRecommendedSportPlan = async () => {
     console.log('后端响应:', response);
     scenario.value = response.response.scenario;
   } catch (error) {
-    console.error('获取推荐散步方案时出错：', error);
+    console.error('获取推荐运动方案时出错：', error);
   }
 };
 
