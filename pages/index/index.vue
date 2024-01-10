@@ -1,7 +1,8 @@
 <template>
 	<view class="container">
 		<br>
-		<view style="font-size: 20px;">&nbsp;&nbsp;&nbsp;{{ formattedDate }}&nbsp;&nbsp;&nbsp;Hello, 用户名</view>
+		<view style="font-size: 20px;">&nbsp;&nbsp;&nbsp;{{ formattedDate }}&nbsp;&nbsp;&nbsp;Hello</view>
+		<view>{{ user_name }}</view>
 		<uni-card :is-shadow="true" style="border-radius: 20px;">
 		<image src="../../static/home1.png" class="homeimage"></image>	
 		</uni-card>
@@ -52,6 +53,7 @@ import { ref, computed, onMounted } from 'vue';
 import bloodSugarAPI from '@/api/bloodSugar';
 import sportAPI from '@/api/sport';
 import { useUserStore } from '@/store/user';
+import userName from "@/api/userName"
 const userStore = useUserStore();
 console.log('当前 userInfo 值:', userStore);
 const isUserLoggedIn = computed(() => {
@@ -62,17 +64,24 @@ const isUserLoggedIn = computed(() => {
 const userInfo = computed(() => userStore.userInfo);
 const blood_sugar = ref([])
 const heart_rate = ref([])
+const user_name=ref([]);
 
 const getRealTimeBloodSugar = async () => {
   try {
     const response = await bloodSugarAPI.realTimeBloodSugar();
 	blood_sugar.value = response;
 	if (response > 13.3){
-		uni.showToast({ title: '您当前血糖过高，请立即休息！' });
+		uni.showToast({
+			title: '您当前血糖过高，请立即休息！',
+			icon:'none',
+		});
 	}
 		
 	else if(response < 2.8){
-		uni.showToast({ title: '您当前血糖过低，请立即休息！' });
+		uni.showToast({ 
+			title: '您当前血糖过低，请立即休息！' ,
+			icon:'none',
+		});
 	}
   } catch (error) {
     console.error('获取血糖数据时出错：', error);
@@ -84,18 +93,33 @@ const getRealTimeHeartRate = async () => {
     const response = await sportAPI.realTimeHeartRate();
 	heart_rate.value = response;
 	if (response > 180){
-		uni.showToast({ title: '您当前心率过高，请立即休息！' });
+		uni.showToast({ 
+			title: '您当前心率过高，请立即休息！',
+			icon:'none',
+		});
 	}
   } catch (error) {
     console.error('获取心率数据时出错：', error);
   }
 };
 
-// 每5秒请求一次血糖数据
-const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
+//获取用户名
+const getUserName = async () => {
+	console.log(2);
+  try {
+	  console.log(1);
+    const response = await userName.getUserName();
+	console.log(response.response);
+	user_name.value=response.response;
+  } catch (error) {
+    console.error('获取用户名数据时出错：', error);
+  }
+};
+// // 每5秒请求一次血糖数据
+// const bloodSugarIntervalId = setInterval(getRealTimeBloodSugar, 5000);
 
-// 每5秒请求一次心率数据
-const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
+// // 每5秒请求一次心率数据
+// const heartRateIntervalId = setInterval(getRealTimeHeartRate, 5000);
 
 // 使用 ref 创建响应式变量
 const currentDate = ref(new Date());
@@ -114,6 +138,7 @@ onMounted(() => {
   getRealTimeBloodSugar();
   getRealTimeHeartRate();
   formatCurrentDate();
+  getUserName();
 });
 
 const textContent = computed(() => {

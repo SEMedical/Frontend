@@ -151,6 +151,25 @@ export default{
 			throw error;
 		});
 	},
+	/* selectSportScheme(userResponses) {
+	  // 获取存储在本地的 token
+	  const token = uni.getStorageSync('jwt_token');
+	  // 如果 token 存在，将其添加到请求头中
+	  const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+	
+	  const Answer1DTO = {
+	    result: userResponses,
+	  };
+	
+	  return request(`/api/sports/set-scenario`, 'POST', Answer1DTO, headers)
+	    .then(response => {
+	      console.log('后端响应:', response);
+	      return response;
+	    })
+	    .catch(error => {
+	      throw error;
+	    });
+	}, */
 	detailedSportRecord() {
 		// 获取存储在本地的 token
 		const token = uni.getStorageSync('jwt_token');

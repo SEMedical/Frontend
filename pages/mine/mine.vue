@@ -5,7 +5,7 @@
         <image src="../../static/ex_avatar.png" mode="aspectFill" style="width: 120px; height: 120px; border-radius: 50%;"></image>
       </uni-col>
       <uni-col :span="16" style="margin-top: 10px; padding-left: 6px;">
-        <view class="intro">用户名</view>
+        <view class="intro">{{user_name}}</view>
 		<view style="height: 6px;"></view> <!-- 添加的空行 -->
       </uni-col>
     </uni-row>
@@ -37,11 +37,29 @@
 <script setup>
 	import { ref, computed, onMounted } from 'vue';
 	import { useUserStore } from '@/store/user';
+	import userName from "@/api/userName"
 	const userStore = useUserStore();
+	const user_name=ref([]);
 	console.log('当前 userInfo 值:', userStore);
 	const isUserLoggedIn = computed(() => {
 	  // 检查 userInfo 对象是否有键，即是否不为空
 	  return Object.keys(userStore.userInfo).length > 0;
+	});
+	//获取用户名
+	const getUserName = async () => {
+		console.log(2);
+	  try {
+		  console.log(1);
+	    const response = await userName.getUserName();
+		console.log(response.response);
+		user_name.value=response.response;
+	  } catch (error) {
+	    console.error('获取用户名数据时出错：', error);
+	   }
+	};
+	onMounted(() => {
+
+	  getUserName();
 	});
 </script>
 <style>
