@@ -28,4 +28,20 @@ export const loginAPI = async ({ id, password }) => {
   }
 };
 
+/* //获取用户名
+export default{
+    getUsername() {
+		return request(`/api/health/getUserName`, 'GET')
+			.then(response => {
+			console.log('后端响应:', response);
+			console.log(response);
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+	}
+} */
+
+
 export default loginAPI;

@@ -75,9 +75,10 @@ onMounted(async () => {
 }
 
 .intro {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: black;
 }
 
 .intro2 {

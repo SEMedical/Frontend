@@ -10,7 +10,7 @@
     <view class="lower-half white-background">
       	<view style="font-size: 25px; font-weight: bold;">您已快走{{ distance }}公里，<br>
 		用时{{time}},<br>当前心率{{heart_rate}}次/分钟,<br>
-		当前配速{{speed/100}}m/s,<br>已消耗{{calorie}}kcal</view>
+		当前配速{{speed}},<br>已消耗{{calorie}}kcal</view>
     </view>
 	<navigator url="/pages/index/doSport" hover-class="navigator-hover">
 		<button class="flex-item green-button floating-button" @click="stopDoingSport">
@@ -37,17 +37,30 @@
 		distance.value = response.distance.toFixed(2);
 		time.value = response.time;
 		speed.value = response.speed;
+		console.log(speed.value);
 		calorie.value = response.calorie;
 	  } catch (error) {
 	    console.error('获取实时运动数据时出错：', error);
 	  }
 	};
 	
-	const intervalId = setInterval(getRealTimeSportData, 5000);
-	
+	/* const intervalId = setInterval(getRealTimeSportData, 5000); */
+	let intervalId;
 	const stopDoingSport = async () => {
 	  try {
 	    const response = await sportAPI.stopDoingSport();
+		console.log(response.success);
+		 clearInterval(intervalId); // 清除定时器
+	  } catch (error) {
+	    console.error('停止运动出错：', error);
+	  }
+	};
+	
+	const startDoingSport = async () => {
+	  try {
+		intervalId = setInterval(getRealTimeSportData, 5000);
+	    const response = await sportAPI.startDoingSport();
+		console.log(response.success);
 	  } catch (error) {
 	    console.error('停止运动出错：', error);
 	  }
@@ -63,15 +76,16 @@
 	  }
 	};
 	onMounted(() => {
-		getRealTimeSportData();
-		getRealTimeHeartRate();
+		/* getRealTimeSportData(); */
+		getRealTimeHeartRate(); 
+		startDoingSport();
 	});
 	
 </script>
 
 <style scoped>
 	.intro {
-	    font-size: 30px; /* 替换 18px 为你想要的字体大小 */
+	    font-size: 30px; /* 替换 18px 为你想要的字体大小
 		font-weight: bold; /* 使用 bold 来将字体加粗 */
 		color: white;
 	}

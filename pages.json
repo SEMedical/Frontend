@@ -58,7 +58,7 @@
 	{
 		"path": "pages/index/questionnaire0",
 		"style": {
-			"navigationBarTitleText": "运动问卷0",
+			"navigationBarTitleText": "运动问卷",
 			"navigationBarBackgroundColor": "#eee"
 		}
 	},
