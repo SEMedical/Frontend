@@ -10,7 +10,7 @@ export const registerPatientAPI = async ({ name, password, contact, gender, age 
 	
 	try {
         const response = await request(
-            '/register/patient',
+            '/api/register/patient',
             'POST',
             {
                 name,
@@ -32,7 +32,7 @@ export const registerPatientAPI = async ({ name, password, contact, gender, age 
 export const registerDoctorAPI = async ({ name, password, contact }) => {
     try {
         const response = await request(
-            '/register/doctor',
+            '/api/register/doctor',
             'POST',
             {
                 name,

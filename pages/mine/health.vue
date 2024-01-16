@@ -5,7 +5,7 @@
         <image src="../../static/ex_avatar.png" mode="aspectFill" style="width: 120px; height: 120px; border-radius: 50%;"></image>
       </uni-col>
       <uni-col :span="16" style="margin-top: 10px; padding-left: 6px;">
-        <view class="intro">用户名</view>
+        <view class="intro">{{user_name}}</view>
 		<view style="height: 6px;"></view> <!-- 添加的空行 -->
       </uni-col>
     </uni-row>
@@ -35,6 +35,7 @@
 import { ref, onMounted } from 'vue';
 // 导入接口请求函数，这里假设你已经有了相应的接口请求函数
 import messrequest from '@/api/messrequest';
+import userName from "@/api/userName"
 
 // 定义变量
 const gender = ref('');
@@ -45,7 +46,20 @@ const diabetesType = ref('');
 const complications = ref('');
 const diagnosisYear = ref('');
 const familyHistory = ref('');
+const user_name=ref([]);
 
+//获取用户名
+const getUserName = async () => {
+	console.log(2);
+  try {
+	  console.log(1);
+	const response = await userName.getUserName();
+	console.log(response.response);
+	user_name.value=response.response;
+  } catch (error) {
+	console.error('获取用户名数据时出错：', error);
+   }
+};
 // 获取接口数据
 onMounted(async () => {
   try {
@@ -60,6 +74,7 @@ onMounted(async () => {
     complications.value = response.complications;
     diagnosisYear.value = response.diagnosisYear;
     familyHistory.value = response.familyHistory;
+	getUserName();
   } catch (error) {
     console.error('获取数据时出错：', error);
   }
